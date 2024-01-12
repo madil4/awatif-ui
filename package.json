@@ -1,6 +1,6 @@
 {
   "name": "awatif-ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite --open",
@@ -10,5 +10,8 @@
   "devDependencies": {
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
+  },
+  "dependencies": {
+    "vanjs-core": "^1.2.7"
   }
 }
