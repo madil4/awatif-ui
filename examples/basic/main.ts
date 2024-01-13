@@ -1,15 +1,16 @@
-import { app } from "../../src/main";
+import { App } from "../../src/App";
+import { Assignment, Element, Node } from "../../src/App.types";
 
-const nodes = [
+const nodes: Node[] = [
   [8, 12.5, 0],
   [15, 12.5, 0],
   [8, 12.5, 8],
 ];
-const elements = [
+const elements: Element[] = [
   [0, 1],
   [1, 2],
 ];
-const assignments = [
+const assignments: Assignment[] = [
   {
     node: 0,
     support: [true, true, true],
@@ -34,4 +35,4 @@ const assignments = [
   },
 ];
 
-app(nodes, elements, assignments);
+App();
