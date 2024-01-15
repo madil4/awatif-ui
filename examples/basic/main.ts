@@ -1,4 +1,4 @@
-import { App } from "../../src/App";
+import { app } from "../../src/App";
 import { Assignment, Element, Node } from "../../src/App.types";
 
 const nodes: Node[] = [
@@ -35,4 +35,4 @@ const assignments: Assignment[] = [
   },
 ];
 
-App();
+app(nodes);

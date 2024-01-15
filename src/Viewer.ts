@@ -20,7 +20,7 @@ export function Viewer(...objects: THREE.Object3D[]) {
   document.body.appendChild(renderer.domElement);
   document.body.style.margin = "0";
 
-  camera.position.set(5, 5, 5);
+  camera.position.set(20, 20, 20);
   controls.target.set(0, 0, 0);
   controls.update();
 
