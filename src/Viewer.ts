@@ -1,7 +1,10 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import van, { State } from "vanjs-core";
+import { Node } from "./App.types";
+import { Points } from "./objects/Points";
 
-export function Viewer(...objects: THREE.Object3D[]) {
+export function Viewer(model: { nodes: State<Node[]> }) {
   // init
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -12,6 +15,9 @@ export function Viewer(...objects: THREE.Object3D[]) {
   );
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   const controls = new OrbitControls(camera, renderer.domElement);
+
+  const grid = new THREE.GridHelper(20, 20, 0x404040, 0x404040);
+  const points = new Points();
 
   // update
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -24,7 +30,7 @@ export function Viewer(...objects: THREE.Object3D[]) {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  objects.forEach((o) => scene.add(o));
+  scene.add(grid, points);
 
   renderer.render(scene, camera);
 
@@ -38,6 +44,12 @@ export function Viewer(...objects: THREE.Object3D[]) {
 
   // on controls change
   controls.addEventListener("change", () => {
+    renderer.render(scene, camera);
+  });
+
+  // on nodes change
+  van.derive(() => {
+    points.update(model.nodes.val);
     renderer.render(scene, camera);
   });
 }

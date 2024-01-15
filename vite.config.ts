@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   server: {
     port: 4600,
-    open: "/examples/basic/index.html",
+    open: "/examples/parametric/index.html",
   },
   build: {
     rollupOptions: {
@@ -11,7 +11,7 @@ export default defineConfig({
         landing: "index.html",
         docs: "docs/index.html",
         basic: "examples/basic/index.html",
-        beam: "examples/beam/index.html",
+        parametric: "examples/parametric/index.html",
       },
     },
   },

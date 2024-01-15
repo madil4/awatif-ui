@@ -1,11 +1,7 @@
 import { app } from "../../src/App";
 import { Assignment, Element, Node } from "../../src/App.types";
 
-const nodes: Node[] = [
-  [8, 12.5, 0],
-  [15, 12.5, 0],
-  [8, 12.5, 8],
-];
+const nodes: Node[] = [[8, 12.5, 0]];
 const elements: Element[] = [
   [0, 1],
   [1, 2],
@@ -35,4 +31,4 @@ const assignments: Assignment[] = [
   },
 ];
 
-app(nodes);
+app({ nodes });
