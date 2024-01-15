@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-export function Viewer() {
+export function Viewer(...objects: THREE.Object3D[]) {
   // init
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -20,6 +20,14 @@ export function Viewer() {
   document.body.appendChild(renderer.domElement);
   document.body.style.margin = "0";
 
+  camera.position.set(5, 5, 5);
+  controls.target.set(0, 0, 0);
+  controls.update();
+
+  objects.forEach((o) => scene.add(o));
+
+  renderer.render(scene, camera);
+
   // on windows resize
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -32,13 +40,4 @@ export function Viewer() {
   controls.addEventListener("change", () => {
     renderer.render(scene, camera);
   });
-
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshNormalMaterial();
-  const cube = new THREE.Mesh(geometry, material);
-
-  scene.add(cube);
-  camera.position.z = 5;
-
-  renderer.render(scene, camera);
 }
