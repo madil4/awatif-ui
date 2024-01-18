@@ -1,23 +1,20 @@
 import van from "vanjs-core";
-import { Node } from "./App.types";
+import { Model, Node } from "./App.types";
 import { Viewer } from "./Viewer";
 
 type AppType = {
-  nodes?: Node[];
-  onParameterChange?: () => { nodes: Node[] };
+  model?: Model;
+  onParameterChange?: () => Model;
+  parameters?: any;
+  settings?: any;
 };
 
-function App({ onParameterChange, nodes }: AppType) {
+function App({ model: modelDirect, onParameterChange }: AppType) {
+  const modelOnChange = onParameterChange?.();
+
   const model = {
-    nodes: van.state<Node[]>([]),
+    nodes: van.state<Node[]>(modelDirect?.nodes ?? modelOnChange?.nodes ?? []),
   };
-
-  if (!nodes && onParameterChange) {
-    let { nodes: nodes2 } = onParameterChange();
-    nodes = nodes2;
-  }
-
-  model.nodes.val = nodes || [];
 
   // simulated user change
   setTimeout(() => {

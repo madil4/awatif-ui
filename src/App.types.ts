@@ -1,3 +1,10 @@
+export type Model = {
+  nodes?: Node[];
+  elements?: Element[];
+  assignments?: Assignment[];
+  analysisResults?: AnalysisResults;
+};
+
 export type Node = [number, number, number];
 export type Element = [number, number];
 
