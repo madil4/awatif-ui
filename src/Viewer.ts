@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import van, { State } from "vanjs-core";
 import { Node } from "./App.types";
-import { Points } from "./objects/Points";
+import { Nodes } from "./objects/Nodes";
 
 export function Viewer(model: { nodes: State<Node[]> }) {
   // init
@@ -17,7 +17,7 @@ export function Viewer(model: { nodes: State<Node[]> }) {
   const controls = new OrbitControls(camera, renderer.domElement);
 
   const grid = new THREE.GridHelper(20, 20, 0x404040, 0x404040);
-  const points = new Points();
+  const nodes = new Nodes();
 
   // update
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -30,7 +30,7 @@ export function Viewer(model: { nodes: State<Node[]> }) {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  scene.add(grid, points);
+  scene.add(grid, nodes);
 
   renderer.render(scene, camera);
 
@@ -49,7 +49,7 @@ export function Viewer(model: { nodes: State<Node[]> }) {
 
   // on nodes change
   van.derive(() => {
-    points.update(model.nodes.val);
+    nodes.update(model.nodes.val);
     renderer.render(scene, camera);
   });
 }
