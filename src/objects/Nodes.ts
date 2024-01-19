@@ -14,6 +14,5 @@ export class Nodes extends THREE.Points<
       "position",
       new THREE.Float32BufferAttribute(nodes.flat(), 3)
     );
-    this.geometry.getAttribute("position").needsUpdate = true;
   }
 }

@@ -2,10 +2,14 @@ import { app } from "../../src/App";
 import { Model } from "../../src/App.types";
 
 const model: Model = {
-  nodes: [[8, 12.5, 0]],
+  nodes: [
+    [0, 0, 0],
+    [5, 0, 0],
+    [0, 5, 0],
+  ],
   elements: [
     [0, 1],
-    [1, 2],
+    [0, 2],
   ],
   assignments: [
     { node: 0, support: [true, true, true] },
