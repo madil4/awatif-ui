@@ -1,17 +1,25 @@
 import van from "vanjs-core";
-import { Element, Model, ModelState, Node } from "./App.types";
+import {
+  Element,
+  Model,
+  ModelState,
+  Node,
+  Parameters as ParametersType,
+} from "./App.types";
 import { Viewer } from "./Viewer";
+import { Parameters } from "./Parameters";
 
-type AppType = {
+function App({
+  model: modelDirect,
+  onParameterChange,
+  parameters,
+}: {
   model?: Model;
-  onParameterChange?: () => Model;
-  parameters?: any;
+  onParameterChange?: (p: ParametersType) => Model;
+  parameters?: ParametersType;
   settings?: any;
-};
-
-function App({ model: modelDirect, onParameterChange }: AppType) {
-  const modelOnChange = onParameterChange?.();
-
+}) {
+  const modelOnChange = parameters && onParameterChange?.(parameters);
   const model: ModelState = {
     nodes: van.state<Node[]>(modelDirect?.nodes ?? modelOnChange?.nodes ?? []),
     elements: van.state<Element[]>(
@@ -19,16 +27,16 @@ function App({ model: modelDirect, onParameterChange }: AppType) {
     ),
   };
 
-  // simulated user change
-  setTimeout(() => {
-    model.nodes.val = [...model.nodes.val.slice(0, 2), [0, 0, 3]];
-  }, 500);
+  if (parameters && onParameterChange)
+    Parameters(parameters, (e) => {
+      // @ts-ignore
+      parameters[e.target.key].value = e.value;
 
-  // simulated user change
-  setTimeout(() => {
-    model.nodes.val = [...model.nodes.val, [0, 0, 6]];
-    model.elements.val = [...model.elements.val, [2, 3]];
-  }, 1000);
+      const newModel = onParameterChange(parameters);
+
+      model.nodes.val = newModel.nodes || [];
+      model.elements.val = newModel.elements || [];
+    });
 
   Viewer(model);
 }

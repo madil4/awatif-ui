@@ -1,12 +1,17 @@
 import { app } from "../../src/App";
-import { Model } from "../../src/App.types";
+import { Model, Parameters } from "../../src/App.types";
 
-function onParameterChange() {
+const parameters: Parameters = {
+  length: { value: 5 },
+  height: { value: 5 },
+};
+
+function onParameterChange(parameters: Parameters) {
   const model: Model = {
     nodes: [
-      [0, 0, 2],
-      [5, 0, 4],
-      [0, 5, 6],
+      [0, 0, 0],
+      [parameters.length.value, 0, 0],
+      [0, parameters.height.value, 0],
     ],
     elements: [
       [0, 1],
@@ -41,4 +46,4 @@ function onParameterChange() {
   return model;
 }
 
-app({ onParameterChange });
+app({ onParameterChange, parameters });
