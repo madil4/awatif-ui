@@ -1,5 +1,14 @@
 import { State } from "vanjs-core";
 
+type Parameter = {
+  value: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  label?: string;
+};
+export type Parameters = Record<string, Parameter>;
+
 export type Model = {
   nodes?: Node[];
   elements?: Element[];
