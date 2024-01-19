@@ -4,13 +4,13 @@ import { Model } from "../../src/App.types";
 function onParameterChange() {
   const model: Model = {
     nodes: [
-      [8, 12.5, 0],
-      [15, 12.5, 0],
-      [8, 12.5, 8],
+      [0, 0, 2],
+      [5, 0, 4],
+      [0, 5, 6],
     ],
     elements: [
       [0, 1],
-      [1, 2],
+      [0, 2],
     ],
     assignments: [
       {

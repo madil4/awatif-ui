@@ -1,8 +1,15 @@
+import { State } from "vanjs-core";
+
 export type Model = {
   nodes?: Node[];
   elements?: Element[];
   assignments?: Assignment[];
   analysisResults?: AnalysisResults;
+};
+
+export type ModelState = {
+  nodes: State<Node[]>;
+  elements: State<Element[]>;
 };
 
 export type Node = [number, number, number];

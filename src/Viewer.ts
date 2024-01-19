@@ -1,10 +1,12 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import van, { State } from "vanjs-core";
-import { Node } from "./App.types";
+import van from "vanjs-core";
+import { ModelState } from "./App.types";
 import { Nodes } from "./objects/Nodes";
+import { Elements } from "./objects/Elements";
+import { Grid } from "./objects/Grid";
 
-export function Viewer(model: { nodes: State<Node[]> }) {
+export function Viewer(model: ModelState) {
   // init
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -16,8 +18,9 @@ export function Viewer(model: { nodes: State<Node[]> }) {
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   const controls = new OrbitControls(camera, renderer.domElement);
 
-  const grid = new THREE.GridHelper(20, 20, 0x404040, 0x404040);
+  const grid = new Grid();
   const nodes = new Nodes();
+  const elements = new Elements();
 
   // update
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -30,7 +33,7 @@ export function Viewer(model: { nodes: State<Node[]> }) {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  scene.add(grid, nodes);
+  scene.add(grid, nodes, elements);
 
   renderer.render(scene, camera);
 
@@ -50,6 +53,12 @@ export function Viewer(model: { nodes: State<Node[]> }) {
   // on nodes change
   van.derive(() => {
     nodes.update(model.nodes.val);
+    renderer.render(scene, camera);
+  });
+
+  // on elements change
+  van.derive(() => {
+    elements.update(model.nodes.val, model.elements.val);
     renderer.render(scene, camera);
   });
 }
