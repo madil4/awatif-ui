@@ -6,6 +6,7 @@ import { Nodes } from "./objects/Nodes";
 import { Elements } from "./objects/Elements";
 import { Grid } from "./objects/Grid";
 import { Supports } from "./objects/Supports";
+import { Loads } from "./objects/Loads";
 
 export function Viewer(model: ModelState, settings: SettingsState) {
   // init
@@ -23,6 +24,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   const nodes = new Nodes();
   const elements = new Elements();
   const supports = new Supports();
+  const loads = new Loads();
 
   // update
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -35,7 +37,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  scene.add(grid, nodes, elements, supports);
+  scene.add(grid, nodes, elements, supports, loads);
 
   renderer.render(scene, camera);
 
@@ -61,6 +63,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     nodes.update(model.nodes.val);
     elements.update(model.nodes.val, model.elements.val);
     supports.update(model.assignments.val.supports, model.nodes.val);
+    loads.update(model.assignments.val.loads, model.nodes.val);
 
     renderer.render(scene, camera);
   });
@@ -70,6 +73,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     nodes.visible = settings.val.nodes;
     elements.visible = settings.val.elements;
     supports.visible = settings.val.supports;
+    loads.visible = settings.val.loads;
 
     renderer.render(scene, camera);
   });

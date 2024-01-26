@@ -1,5 +1,5 @@
 import { app } from "../../src/App";
-import { Model, Parameters } from "../../src/App.types";
+import { Model, Parameters } from "../../src/types";
 
 const parameters: Parameters = {
   length: { value: 10 },
@@ -22,7 +22,7 @@ function onParameterChange(parameters: Parameters) {
     assignments: [
       { node: 0, support: [true, true, true] },
       { node: 3, support: [true, true, true] },
-      { node: 1, load: [0, 0, -10] },
+      { node: 2, load: [10, 0, 0] },
       { element: 0, area: 1.2, elasticity: 200 },
       { element: 1, area: 1.2, elasticity: 200 },
     ],
