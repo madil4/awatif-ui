@@ -14,6 +14,7 @@ export function Parameters(
   if (container) {
     container.style.top = "inherit";
     container.style.bottom = "0px";
+    container.style.width = "300px";
   }
 
   Object.entries(parameters).forEach(([key, parameter]) =>

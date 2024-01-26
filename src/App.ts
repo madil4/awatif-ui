@@ -1,24 +1,21 @@
 import van from "vanjs-core";
 import {
   Element,
-  Model,
+  App as AppType,
   ModelState,
   Node,
-  Parameters as ParametersType,
+  Settings as SettingsType,
 } from "./App.types";
 import { Viewer } from "./Viewer";
 import { Parameters } from "./Parameters";
+import { Settings } from "./Settings";
 
 function App({
   model: modelDirect,
   onParameterChange,
   parameters,
-}: {
-  model?: Model;
-  onParameterChange?: (p: ParametersType) => Model;
-  parameters?: ParametersType;
-  settings?: any;
-}) {
+  settings: settingsOverwrite,
+}: AppType) {
   const modelOnChange = parameters && onParameterChange?.(parameters);
   const model: ModelState = {
     nodes: van.state<Node[]>(modelDirect?.nodes ?? modelOnChange?.nodes ?? []),
@@ -26,6 +23,20 @@ function App({
       modelDirect?.elements ?? modelOnChange?.elements ?? []
     ),
   };
+  const settings = van.state<Required<SettingsType>>({
+    gridSize: 25,
+    displayScale: 1,
+    nodes: true,
+    elements: true,
+    nodesIndices: false,
+    elementsIndices: false,
+    supports: true,
+    loads: true,
+    deformedShape: true,
+    elementResults: "none",
+    nodeResults: "none",
+    ...settingsOverwrite,
+  });
 
   if (parameters && onParameterChange)
     Parameters(parameters, (e) => {
@@ -38,7 +49,8 @@ function App({
       model.elements.val = newModel.elements || [];
     });
 
-  Viewer(model);
+  Viewer(model, settings);
+  Settings(settings);
 }
 
 export const app = App;
