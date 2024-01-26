@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Node } from "../App.types";
+import { Node } from "../types";
 
 export class Nodes extends THREE.Points<
   THREE.BufferGeometry,

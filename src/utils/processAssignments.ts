@@ -5,7 +5,7 @@ import {
   ProcessedAssignments,
   PropertyAssignment,
   SupportAssignment,
-} from "../App.types";
+} from "../types";
 
 export function processAssignments(
   assignments: Assignment[]

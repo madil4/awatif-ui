@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import van from "vanjs-core";
-import { ModelState, SettingsState } from "./App.types";
+import { ModelState, SettingsState } from "./types";
 import { Nodes } from "./objects/Nodes";
 import { Elements } from "./objects/Elements";
 import { Grid } from "./objects/Grid";

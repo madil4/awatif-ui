@@ -31,4 +31,4 @@ function onParameterChange(parameters: Parameters) {
   return model;
 }
 
-app({ onParameterChange, parameters });
+app({ parameters, onParameterChange });
