@@ -37,11 +37,10 @@ function App({
     displayScale: 1,
     nodes: true,
     elements: true,
-    nodesIndices: false,
-    elementsIndices: false,
+    nodesIndexes: false,
+    elementsIndexes: false,
     supports: true,
     loads: true,
-    deformedShape: true,
     elementResults: "none",
     nodeResults: "none",
     ...settingsOverwrite,
@@ -49,15 +48,15 @@ function App({
 
   if (parameters && onParameterChange)
     Parameters(parameters, (e) => {
-      // on parameter change
       // @ts-ignore
       parameters[e.target.key].value = e.value;
 
       const newModel = onParameterChange(parameters);
 
+      // consider updating only if there a change instead of a brute change
       model.nodes.val = newModel.nodes || [];
       model.elements.val = newModel.elements || [];
-      model.assignments.val = processAssignments(newModel.assignments || []); // todo: check if changed before setting
+      model.assignments.val = processAssignments(newModel.assignments || []);
     });
 
   Viewer(model, settings);

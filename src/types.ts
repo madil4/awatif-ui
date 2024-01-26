@@ -24,11 +24,10 @@ export type Settings = {
   displayScale?: number;
   nodes?: boolean;
   elements?: boolean;
-  nodesIndices?: boolean;
-  elementsIndices?: boolean;
+  nodesIndexes?: boolean;
+  elementsIndexes?: boolean;
   supports?: boolean;
   loads?: boolean;
-  deformedShape?: boolean;
   elementResults?: string;
   nodeResults?: string;
 };
