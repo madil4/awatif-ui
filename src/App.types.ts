@@ -34,6 +34,18 @@ export type Settings = {
 
 export type SettingsState = State<Required<Settings>>;
 
+export type ProcessedAssignments = {
+  elasticities: Map<number, PropertyAssignment["elasticity"]>;
+  areas: Map<number, PropertyAssignment["area"]>;
+  loads: Map<number, LoadAssignment["load"]>;
+  supports: Map<number, SupportAssignment["support"]>;
+  momentOfInertiaZs: Map<number, PropertyAssignment["momentOfInertiaZ"]>;
+  momentOfInertiaYs: Map<number, PropertyAssignment["momentOfInertiaY"]>;
+  shearModuluses: Map<number, PropertyAssignment["shearModulus"]>;
+  torsionalConstants: Map<number, PropertyAssignment["torsionalConstant"]>;
+  distributedLoads: Map<number, DistributedLoadAssignment["distributedLoad"]>;
+};
+
 // model
 export type Model = {
   nodes?: Node[];
@@ -45,6 +57,7 @@ export type Model = {
 export type ModelState = {
   nodes: State<Node[]>;
   elements: State<Element[]>;
+  assignments: State<ProcessedAssignments>;
 };
 
 export type Node = [number, number, number];
@@ -57,19 +70,19 @@ export type Assignment =
   | PropertyAssignment
   | DistributedLoadAssignment;
 
-type SupportAssignment = {
+export type SupportAssignment = {
   node: number;
   support:
     | [boolean, boolean, boolean]
     | [boolean, boolean, boolean, boolean, boolean, boolean];
 };
-type LoadAssignment = {
+export type LoadAssignment = {
   node: number;
   load:
     | [number, number, number]
     | [number, number, number, number, number, number];
 };
-type PropertyAssignment = {
+export type PropertyAssignment = {
   element: number;
   elasticity: number;
   shearModulus?: number;
@@ -78,7 +91,7 @@ type PropertyAssignment = {
   momentOfInertiaY?: number;
   torsionalConstant?: number;
 };
-type DistributedLoadAssignment = {
+export type DistributedLoadAssignment = {
   element: number;
   distributedLoad: [number, number];
 };

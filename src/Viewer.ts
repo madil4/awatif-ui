@@ -5,6 +5,7 @@ import { ModelState, SettingsState } from "./App.types";
 import { Nodes } from "./objects/Nodes";
 import { Elements } from "./objects/Elements";
 import { Grid } from "./objects/Grid";
+import { Supports } from "./objects/Supports";
 
 export function Viewer(model: ModelState, settings: SettingsState) {
   // init
@@ -21,6 +22,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   const grid = new Grid();
   const nodes = new Nodes();
   const elements = new Elements();
+  const supports = new Supports();
 
   // update
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -33,12 +35,13 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  scene.add(grid, nodes, elements);
+  scene.add(grid, nodes, elements, supports);
 
   renderer.render(scene, camera);
 
   nodes.visible = settings.val.nodes;
   elements.visible = settings.val.elements;
+  supports.visible = settings.val.supports;
 
   // on windows resize
   window.addEventListener("resize", () => {
@@ -53,15 +56,12 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     renderer.render(scene, camera);
   });
 
-  // on nodes change
+  // on model change
   van.derive(() => {
     nodes.update(model.nodes.val);
-    renderer.render(scene, camera);
-  });
-
-  // on elements change
-  van.derive(() => {
     elements.update(model.nodes.val, model.elements.val);
+    supports.update(model.assignments.val.supports, model.nodes.val);
+
     renderer.render(scene, camera);
   });
 
@@ -69,6 +69,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   van.derive(() => {
     nodes.visible = settings.val.nodes;
     elements.visible = settings.val.elements;
+    supports.visible = settings.val.supports;
 
     renderer.render(scene, camera);
   });

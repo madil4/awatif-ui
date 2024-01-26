@@ -5,10 +5,12 @@ import {
   ModelState,
   Node,
   Settings as SettingsType,
+  ProcessedAssignments,
 } from "./App.types";
 import { Viewer } from "./Viewer";
 import { Parameters } from "./Parameters";
 import { Settings } from "./Settings";
+import { processAssignments } from "./utils/processAssignments";
 
 function App({
   model: modelDirect,
@@ -21,6 +23,11 @@ function App({
     nodes: van.state<Node[]>(modelDirect?.nodes ?? modelOnChange?.nodes ?? []),
     elements: van.state<Element[]>(
       modelDirect?.elements ?? modelOnChange?.elements ?? []
+    ),
+    assignments: van.state<ProcessedAssignments>(
+      processAssignments(
+        modelDirect?.assignments ?? modelOnChange?.assignments ?? []
+      )
     ),
   };
   const settings = van.state<Required<SettingsType>>({
@@ -47,6 +54,7 @@ function App({
 
       model.nodes.val = newModel.nodes || [];
       model.elements.val = newModel.elements || [];
+      model.assignments.val = processAssignments(newModel.assignments || []); // todo: check if changed before setting
     });
 
   Viewer(model, settings);
