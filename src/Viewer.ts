@@ -7,6 +7,8 @@ import { Elements } from "./objects/Elements";
 import { Grid } from "./objects/Grid";
 import { Supports } from "./objects/Supports";
 import { Loads } from "./objects/Loads";
+import { NodesIndexes } from "./objects/NodesIndexes";
+import { ElementsIndexes } from "./objects/ElementsIndexes";
 
 export function Viewer(model: ModelState, settings: SettingsState) {
   // init
@@ -25,6 +27,8 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   const elements = new Elements();
   const supports = new Supports();
   const loads = new Loads();
+  const nodesIndexes = new NodesIndexes();
+  const elementsIndexes = new ElementsIndexes();
 
   // update
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -37,7 +41,15 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  scene.add(grid, nodes, elements, supports, loads);
+  scene.add(
+    grid,
+    nodes,
+    elements,
+    supports,
+    loads,
+    nodesIndexes,
+    elementsIndexes
+  );
 
   renderer.render(scene, camera);
 
@@ -60,10 +72,15 @@ export function Viewer(model: ModelState, settings: SettingsState) {
 
   // on model change
   van.derive(() => {
+    // since the model is updated as a whole at each parameter change
+    // there is no point in updating the sub-components separately
     nodes.update(model.nodes.val);
     elements.update(model.nodes.val, model.elements.val);
     supports.update(model.assignments.val.supports, model.nodes.val);
     loads.update(model.assignments.val.loads, model.nodes.val);
+    nodesIndexes.update(model.nodes.val);
+    elementsIndexes.update(model.elements.val, model.nodes.val);
+    // update only if shown
 
     renderer.render(scene, camera);
   });
@@ -74,6 +91,8 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     elements.visible = settings.val.elements;
     supports.visible = settings.val.supports;
     loads.visible = settings.val.loads;
+    nodesIndexes.visible = settings.val.nodesIndexes;
+    elementsIndexes.visible = settings.val.elementsIndexes;
 
     renderer.render(scene, camera);
   });

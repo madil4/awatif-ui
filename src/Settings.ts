@@ -15,28 +15,26 @@ export function Settings(settings: State<Settings>) {
     container.style.width = "300px";
   }
 
-  pane.addBinding(settings.val, "gridSize", { label: "grid size", min: 1 });
   pane.addBinding(settings.val, "displayScale", {
-    label: "display scale",
+    label: "Display scale",
     min: -10,
     max: 10,
     step: 1,
   });
-  pane.addBinding(settings.val, "nodes");
-  pane.addBinding(settings.val, "elements");
-  pane.addBinding(settings.val, "nodesIndices", { label: "nodes indices" });
-  pane.addBinding(settings.val, "elementsIndices", {
-    label: "elements indices",
+  pane.addBinding(settings.val, "nodes", { label: "Nodes" });
+  pane.addBinding(settings.val, "elements", { label: "Elements" });
+  pane.addBinding(settings.val, "nodesIndexes", { label: "Nodes indexes" });
+  pane.addBinding(settings.val, "elementsIndexes", {
+    label: "Elements indexes",
   });
-  pane.addBinding(settings.val, "supports");
-  pane.addBinding(settings.val, "loads");
-  pane.addBinding(settings.val, "deformedShape", { label: "deformed shape" });
+  pane.addBinding(settings.val, "supports", { label: "Supports" });
+  pane.addBinding(settings.val, "loads", { label: "Loads" });
   pane.addBinding(settings.val, "elementResults", {
     options: {
       none: "none",
       normal: "normal",
     },
-    label: "element results",
+    label: "Element results",
   });
   pane.addBinding(settings.val, "nodeResults", {
     options: {
@@ -44,7 +42,7 @@ export function Settings(settings: State<Settings>) {
       deformation: "deformation",
       reaction: "reaction",
     },
-    label: "node results",
+    label: "Node results",
   });
 
   pane.on("change", (e) => {
