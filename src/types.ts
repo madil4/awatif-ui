@@ -1,9 +1,10 @@
 import { State } from "vanjs-core";
 
+// app
 export type App = {
   model?: Model;
-  onParameterChange?: (p: Parameters) => Model;
   parameters?: Parameters;
+  onParameterChange?: (p: Parameters) => Model;
   settings?: Settings;
 };
 

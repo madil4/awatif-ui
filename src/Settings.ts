@@ -1,5 +1,5 @@
 import { Pane } from "tweakpane";
-import { Settings } from "./App.types";
+import { Settings } from "./types";
 import { State } from "vanjs-core";
 
 export function Settings(settings: State<Settings>) {

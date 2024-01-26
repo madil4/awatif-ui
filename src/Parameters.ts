@@ -1,5 +1,5 @@
 import { Pane, TpChangeEvent } from "tweakpane";
-import { Parameters } from "./App.types";
+import { Parameters } from "./types";
 
 export function Parameters(
   parameters: Parameters,

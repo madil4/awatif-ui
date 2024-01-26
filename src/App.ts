@@ -6,7 +6,7 @@ import {
   Node,
   Settings as SettingsType,
   ProcessedAssignments,
-} from "./App.types";
+} from "./types";
 import { Viewer } from "./Viewer";
 import { Parameters } from "./Parameters";
 import { Settings } from "./Settings";
@@ -14,11 +14,13 @@ import { processAssignments } from "./utils/processAssignments";
 
 function App({
   model: modelDirect,
-  onParameterChange,
   parameters,
+  onParameterChange,
   settings: settingsOverwrite,
 }: AppType) {
+  // init
   const modelOnChange = parameters && onParameterChange?.(parameters);
+
   const model: ModelState = {
     nodes: van.state<Node[]>(modelDirect?.nodes ?? modelOnChange?.nodes ?? []),
     elements: van.state<Element[]>(
@@ -47,6 +49,7 @@ function App({
 
   if (parameters && onParameterChange)
     Parameters(parameters, (e) => {
+      // on parameter change
       // @ts-ignore
       parameters[e.target.key].value = e.value;
 
