@@ -1,12 +1,12 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import van from "vanjs-core";
-import { ModelState } from "./App.types";
+import { ModelState, SettingsState } from "./App.types";
 import { Nodes } from "./objects/Nodes";
 import { Elements } from "./objects/Elements";
 import { Grid } from "./objects/Grid";
 
-export function Viewer(model: ModelState) {
+export function Viewer(model: ModelState, settings: SettingsState) {
   // init
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -37,6 +37,9 @@ export function Viewer(model: ModelState) {
 
   renderer.render(scene, camera);
 
+  nodes.visible = settings.val.nodes;
+  elements.visible = settings.val.elements;
+
   // on windows resize
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -59,6 +62,14 @@ export function Viewer(model: ModelState) {
   // on elements change
   van.derive(() => {
     elements.update(model.nodes.val, model.elements.val);
+    renderer.render(scene, camera);
+  });
+
+  // on settings change
+  van.derive(() => {
+    nodes.visible = settings.val.nodes;
+    elements.visible = settings.val.elements;
+
     renderer.render(scene, camera);
   });
 }

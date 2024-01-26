@@ -1,14 +1,40 @@
 import { State } from "vanjs-core";
 
-type Parameter = {
-  value: number;
-  min?: number;
-  max?: number;
-  step?: number;
-  label?: string;
+export type App = {
+  model?: Model;
+  onParameterChange?: (p: Parameters) => Model;
+  parameters?: Parameters;
+  settings?: Settings;
 };
-export type Parameters = Record<string, Parameter>;
 
+export type Parameters = Record<
+  string,
+  {
+    value: number;
+    min?: number;
+    max?: number;
+    step?: number;
+    label?: string;
+  }
+>;
+
+export type Settings = {
+  gridSize?: number;
+  displayScale?: number;
+  nodes?: boolean;
+  elements?: boolean;
+  nodesIndices?: boolean;
+  elementsIndices?: boolean;
+  supports?: boolean;
+  loads?: boolean;
+  deformedShape?: boolean;
+  elementResults?: string;
+  nodeResults?: string;
+};
+
+export type SettingsState = State<Required<Settings>>;
+
+// model
 export type Model = {
   nodes?: Node[];
   elements?: Element[];
