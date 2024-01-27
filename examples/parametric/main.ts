@@ -10,8 +10,8 @@ function onParameterChange(parameters: Parameters) {
   const model: Model = {
     nodes: [
       [0, 0, 0],
-      [0, parameters.height.value, 0],
-      [parameters.length.value, parameters.height.value, 0],
+      [0, 0, parameters.height.value],
+      [parameters.length.value, 0, parameters.height.value],
       [parameters.length.value, 0, 0],
     ],
     elements: [

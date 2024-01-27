@@ -1,11 +1,17 @@
 import * as THREE from "three";
 
 export class Text extends THREE.Sprite {
-  constructor(text: string, size: number) {
+  constructor(text: string, size: number, color?: string, background?: string) {
     super();
 
     const resolution = 20;
-    this.material.map = createTexture(text, size, resolution);
+    this.material.map = createTexture(
+      text,
+      size,
+      resolution,
+      color,
+      background
+    );
     this.material.depthTest = false;
 
     this.renderOrder = 99;
