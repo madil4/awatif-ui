@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import van from "vanjs-core";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { ModelState, SettingsState } from "./types";
 import { Nodes } from "./objects/Nodes";
 import { Elements } from "./objects/Elements";
@@ -9,9 +9,12 @@ import { Supports } from "./objects/Supports";
 import { Loads } from "./objects/Loads";
 import { NodesIndexes } from "./objects/NodesIndexes";
 import { ElementsIndexes } from "./objects/ElementsIndexes";
+import { Axes } from "./objects/Axes";
 
 export function Viewer(model: ModelState, settings: SettingsState) {
   // init
+  THREE.Object3D.DEFAULT_UP = new THREE.Vector3(0, 0, 1);
+
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     45,
@@ -23,6 +26,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   const controls = new OrbitControls(camera, renderer.domElement);
 
   const grid = new Grid();
+  const axes = new Axes();
   const nodes = new Nodes();
   const elements = new Elements();
   const supports = new Supports();
@@ -37,12 +41,12 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   document.body.appendChild(renderer.domElement);
   document.body.style.margin = "0";
 
-  camera.position.set(20, 20, 20);
-  controls.target.set(0, 0, 0);
+  camera.position.set(0, -25, 10);
   controls.update();
 
   scene.add(
     grid,
+    axes,
     nodes,
     elements,
     supports,
@@ -56,6 +60,9 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   nodes.visible = settings.val.nodes;
   elements.visible = settings.val.elements;
   supports.visible = settings.val.supports;
+  loads.visible = settings.val.loads;
+  nodesIndexes.visible = settings.val.nodesIndexes;
+  elementsIndexes.visible = settings.val.elementsIndexes;
 
   // on windows resize
   window.addEventListener("resize", () => {
@@ -74,13 +81,16 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   van.derive(() => {
     // since the model is updated as a whole at each parameter change
     // there is no point in updating the sub-components separately
-    nodes.update(model.nodes.val);
-    elements.update(model.nodes.val, model.elements.val);
-    supports.update(model.assignments.val.supports, model.nodes.val);
-    loads.update(model.assignments.val.loads, model.nodes.val);
-    nodesIndexes.update(model.nodes.val);
-    elementsIndexes.update(model.elements.val, model.nodes.val);
-    // update only if shown
+    if (settings.val.nodes) nodes.update(model.nodes.val);
+    if (settings.val.elements)
+      elements.update(model.nodes.val, model.elements.val);
+    if (settings.val.supports)
+      supports.update(model.assignments.val.supports, model.nodes.val);
+    if (settings.val.loads)
+      loads.update(model.assignments.val.loads, model.nodes.val);
+    if (settings.val.nodesIndexes) nodesIndexes.update(model.nodes.val);
+    if (settings.val.elementsIndexes)
+      elementsIndexes.update(model.elements.val, model.nodes.val);
 
     renderer.render(scene, camera);
   });
