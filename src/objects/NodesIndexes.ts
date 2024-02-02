@@ -3,7 +3,7 @@ import { Node } from "../types";
 import { Text } from "./Text";
 
 export class NodesIndexes extends THREE.Group {
-  constructor() {
+  constructor(private girdSize: number) {
     super();
   }
 
@@ -12,7 +12,7 @@ export class NodesIndexes extends THREE.Group {
     this.clear();
 
     nodes.forEach((node, index) => {
-      const text = new Text(`${index}`, 1);
+      const text = new Text(`${index}`, 0.05 * this.girdSize);
 
       text.position.set(...node);
 

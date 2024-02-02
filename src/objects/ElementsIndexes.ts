@@ -3,7 +3,7 @@ import { Node, Element } from "../types";
 import { Text } from "./Text";
 
 export class ElementsIndexes extends THREE.Group {
-  constructor() {
+  constructor(private gridSize: number) {
     super();
   }
 
@@ -12,7 +12,7 @@ export class ElementsIndexes extends THREE.Group {
     this.clear();
 
     elements.forEach((element, index) => {
-      const text = new Text(`${index}`, 1);
+      const text = new Text(`${index}`, 0.05 * this.gridSize);
 
       text.position.set(...computeCenter(nodes[element[0]], nodes[element[1]]));
 

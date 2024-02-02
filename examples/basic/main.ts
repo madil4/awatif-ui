@@ -4,9 +4,9 @@ import { Model } from "../../src/types";
 const model: Model = {
   nodes: [
     [0, 0, 0],
-    [0, 0, 10],
-    [10, 0, 10],
-    [10, 0, 0],
+    [0, 0, 500],
+    [500, 0, 500],
+    [500, 0, 0],
   ],
   elements: [
     [0, 1],
@@ -22,4 +22,4 @@ const model: Model = {
   ],
 };
 
-app({ model });
+app({ model, settings: { gridSize: 1000 } });

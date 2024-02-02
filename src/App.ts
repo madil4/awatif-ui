@@ -33,7 +33,7 @@ function App({
     ),
   };
   const settings = van.state<Required<SettingsType>>({
-    gridSize: 25,
+    gridSize: 20,
     displayScale: 1,
     nodes: true,
     elements: true,
