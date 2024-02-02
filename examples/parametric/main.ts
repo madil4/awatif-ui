@@ -2,8 +2,8 @@ import { app } from "../../src/App";
 import { Model, Parameters } from "../../src/types";
 
 const parameters: Parameters = {
-  length: { value: 10 },
-  height: { value: 10 },
+  length: { value: 10, min: 1, max: 20 },
+  height: { value: 10, min: 1, max: 10 },
 };
 
 function onParameterChange(parameters: Parameters) {

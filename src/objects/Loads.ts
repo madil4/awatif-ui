@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { ProcessedAssignments, Node } from "../types";
 
 export class Loads extends THREE.Group {
-  constructor() {
+  constructor(private gridSize: number) {
     super();
   }
 
@@ -19,6 +19,9 @@ export class Loads extends THREE.Group {
         0.3,
         0.3
       );
+
+      const scale = 0.07 * this.gridSize;
+      arrow.scale.set(scale, scale, scale);
 
       this.add(arrow);
     });

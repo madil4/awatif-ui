@@ -7,6 +7,8 @@ export class Elements extends THREE.Line<
 > {
   constructor() {
     super(new THREE.BufferGeometry(), new THREE.LineBasicMaterial());
+
+    this.frustumCulled = false;
   }
 
   update(nodes: Node[], elements: Element[]) {

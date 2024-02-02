@@ -5,8 +5,11 @@ export class Nodes extends THREE.Points<
   THREE.BufferGeometry,
   THREE.PointsMaterial
 > {
-  constructor() {
+  constructor(private gridSize: number) {
     super(new THREE.BufferGeometry(), new THREE.PointsMaterial());
+
+    this.frustumCulled = false;
+    this.material.size = 0.04 * this.gridSize;
   }
 
   update(nodes: Node[]) {

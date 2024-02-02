@@ -20,19 +20,20 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     45,
     window.innerWidth / window.innerHeight,
     0.1,
-    1000
+    2 * 1e6 // supported view till 1e6
   );
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   const controls = new OrbitControls(camera, renderer.domElement);
 
-  const grid = new Grid();
-  const axes = new Axes();
-  const nodes = new Nodes();
+  const gridSize = settings.val.gridSize;
+  const grid = new Grid(gridSize);
+  const axes = new Axes(gridSize);
+  const nodes = new Nodes(gridSize);
   const elements = new Elements();
-  const supports = new Supports();
-  const loads = new Loads();
-  const nodesIndexes = new NodesIndexes();
-  const elementsIndexes = new ElementsIndexes();
+  const supports = new Supports(gridSize);
+  const loads = new Loads(gridSize);
+  const nodesIndexes = new NodesIndexes(gridSize);
+  const elementsIndexes = new ElementsIndexes(gridSize);
 
   // update
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -41,7 +42,12 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   document.body.appendChild(renderer.domElement);
   document.body.style.margin = "0";
 
-  camera.position.set(0, -25, 10);
+  const z2fit = gridSize * 0.5 + (gridSize * 0.5) / Math.tan(45 * 0.5);
+  camera.position.set(0.5 * gridSize, 0.8 * -z2fit, 0.5 * gridSize);
+  controls.target.set(0.5 * gridSize, 0.5 * gridSize, 0);
+  controls.minDistance = 1;
+  controls.maxDistance = z2fit * 1.5;
+  controls.zoomSpeed = 20;
   controls.update();
 
   scene.add(
