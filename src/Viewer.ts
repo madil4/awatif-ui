@@ -10,6 +10,7 @@ import { Loads } from "./objects/Loads";
 import { NodesIndexes } from "./objects/NodesIndexes";
 import { ElementsIndexes } from "./objects/ElementsIndexes";
 import { Axes } from "./objects/Axes";
+import { Orientations } from "./objects/Orientations";
 
 export function Viewer(model: ModelState, settings: SettingsState) {
   // init
@@ -43,7 +44,8 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     NodesIndexes(model, settings, displayScale),
     ElementsIndexes(model, settings, displayScale),
     Supports(model, settings, displayScale),
-    Loads(model, settings, displayScale)
+    Loads(model, settings, displayScale),
+    Orientations(model, settings, displayScale)
   );
 
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -84,6 +86,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     settings.elements.val;
     settings.nodesIndexes.val;
     settings.elementsIndexes.val;
+    settings.orientations.val;
     settings.supports.val;
     settings.loads.val;
     settings.elementResults.val;

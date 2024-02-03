@@ -5,7 +5,6 @@ export function Grid(gridSize: number): THREE.GridHelper {
 
   grid.position.set(0.5 * gridSize, 0.5 * gridSize, 0);
   grid.rotateX(Math.PI / 2);
-  grid.material.depthWrite = false;
 
   return grid;
 }

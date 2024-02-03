@@ -26,6 +26,7 @@ export type Settings = {
   elements?: boolean;
   nodesIndexes?: boolean;
   elementsIndexes?: boolean;
+  orientations?: boolean;
   supports?: boolean;
   loads?: boolean;
   elementResults?: string;
@@ -39,6 +40,7 @@ export type SettingsState = {
   elements: State<boolean>;
   nodesIndexes: State<boolean>;
   elementsIndexes: State<boolean>;
+  orientations: State<boolean>;
   supports: State<boolean>;
   loads: State<boolean>;
   elementResults: State<string>;
