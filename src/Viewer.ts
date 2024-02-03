@@ -25,17 +25,27 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   const renderer = new THREE.WebGLRenderer({ antialias: true });
   const controls = new OrbitControls(camera, renderer.domElement);
 
-  const gridSize = settings.val.gridSize;
-  const grid = new Grid(gridSize);
-  const axes = new Axes(gridSize);
-  const nodes = new Nodes(gridSize);
-  const elements = new Elements();
-  const supports = new Supports(gridSize);
-  const loads = new Loads(gridSize);
-  const nodesIndexes = new NodesIndexes(gridSize);
-  const elementsIndexes = new ElementsIndexes(gridSize);
+  const gridSize = settings.gridSize.val;
+  const displayScale = van.derive(() =>
+    settings.displayScale.val === 0
+      ? 1
+      : settings.displayScale.val > 0
+      ? settings.displayScale.val
+      : -1 / settings.displayScale.val
+  );
 
   // update
+  scene.add(
+    Grid(gridSize),
+    Axes(gridSize),
+    Nodes(model, settings, displayScale),
+    Elements(model, settings),
+    NodesIndexes(model, settings, displayScale),
+    ElementsIndexes(model, settings, displayScale),
+    Supports(model, settings, displayScale),
+    Loads(model, settings, displayScale)
+  );
+
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setClearColor(0x000000, 1);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -50,26 +60,6 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   controls.zoomSpeed = 20;
   controls.update();
 
-  scene.add(
-    grid,
-    axes,
-    nodes,
-    elements,
-    supports,
-    loads,
-    nodesIndexes,
-    elementsIndexes
-  );
-
-  renderer.render(scene, camera);
-
-  nodes.visible = settings.val.nodes;
-  elements.visible = settings.val.elements;
-  supports.visible = settings.val.supports;
-  loads.visible = settings.val.loads;
-  nodesIndexes.visible = settings.val.nodesIndexes;
-  elementsIndexes.visible = settings.val.elementsIndexes;
-
   // on windows resize
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -83,32 +73,20 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     renderer.render(scene, camera);
   });
 
-  // on model change
+  // on settings or model change: render
   van.derive(() => {
-    // since the model is updated as a whole at each parameter change
-    // there is no point in updating the sub-components separately
-    if (settings.val.nodes) nodes.update(model.nodes.val);
-    if (settings.val.elements)
-      elements.update(model.nodes.val, model.elements.val);
-    if (settings.val.supports)
-      supports.update(model.assignments.val.supports, model.nodes.val);
-    if (settings.val.loads)
-      loads.update(model.assignments.val.loads, model.nodes.val);
-    if (settings.val.nodesIndexes) nodesIndexes.update(model.nodes.val);
-    if (settings.val.elementsIndexes)
-      elementsIndexes.update(model.elements.val, model.nodes.val);
+    model.nodes.val;
+    model.elements.val;
+    model.assignments.val;
 
-    renderer.render(scene, camera);
-  });
-
-  // on settings change
-  van.derive(() => {
-    nodes.visible = settings.val.nodes;
-    elements.visible = settings.val.elements;
-    supports.visible = settings.val.supports;
-    loads.visible = settings.val.loads;
-    nodesIndexes.visible = settings.val.nodesIndexes;
-    elementsIndexes.visible = settings.val.elementsIndexes;
+    settings.displayScale.val;
+    settings.nodes.val;
+    settings.elements.val;
+    settings.nodesIndexes.val;
+    settings.elementsIndexes.val;
+    settings.supports.val;
+    settings.loads.val;
+    settings.elementResults.val;
 
     renderer.render(scene, camera);
   });

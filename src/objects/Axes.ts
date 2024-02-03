@@ -1,50 +1,54 @@
 import * as THREE from "three";
 import { Text } from "./Text";
 
-export class Axes extends THREE.Group {
-  constructor(private gridSize: number) {
-    super();
+export function Axes(gridSize: number): THREE.Group {
+  // init
+  const axes = new THREE.Group();
 
-    // init
-    const size = 0.07 * this.gridSize;
-    const xArrow = new THREE.ArrowHelper(
-      new THREE.Vector3(1, 0, 0),
-      new THREE.Vector3(0, 0, 0),
-      1.5,
-      0x666666,
-      0.3,
-      0.3
-    );
-    const yArrow = new THREE.ArrowHelper(
-      new THREE.Vector3(0, 1, 0),
-      new THREE.Vector3(0, 0, 0),
-      1.5,
-      0x666666,
-      0.3,
-      0.3
-    );
-    const zArrow = new THREE.ArrowHelper(
-      new THREE.Vector3(0, 0, 1),
-      new THREE.Vector3(0, 0, 0),
-      1.5,
-      0x666666,
-      0.3,
-      0.3
-    );
-    const xText = new Text("X", 0.5 * size, "red", "transparent");
-    const yText = new Text("Y", 0.5 * size, "green", "transparent");
-    const zText = new Text("Z", 0.5 * size, "blue", "transparent");
+  const xText = new Text("X", "red", "transparent");
+  const yText = new Text("Y", "green", "transparent");
+  const zText = new Text("Z", "blue", "transparent");
 
-    // update
-    this.add(xArrow, yArrow, zArrow, xText, yText, zText);
+  const xArrow = new THREE.ArrowHelper(
+    new THREE.Vector3(1, 0, 0),
+    new THREE.Vector3(0, 0, 0),
+    1,
+    0x666666,
+    0.2,
+    0.2
+  );
+  const yArrow = new THREE.ArrowHelper(
+    new THREE.Vector3(0, 1, 0),
+    new THREE.Vector3(0, 0, 0),
+    1,
+    0x666666,
+    0.2,
+    0.2
+  );
+  const zArrow = new THREE.ArrowHelper(
+    new THREE.Vector3(0, 0, 1),
+    new THREE.Vector3(0, 0, 0),
+    1,
+    0x666666,
+    0.2,
+    0.2
+  );
 
-    const textOffset = 1.8 * size;
-    xText.position.set(textOffset, 0, 0);
-    yText.position.set(0, textOffset, 0);
-    zText.position.set(0, 0, textOffset);
+  // update
+  axes.add(xArrow, yArrow, zArrow, xText, yText, zText);
 
-    xArrow.scale.set(size, size, size);
-    yArrow.scale.set(size, size, size);
-    zArrow.scale.set(size, size, size);
-  }
+  const size = 0.07 * gridSize;
+
+  xText.position.set(1.3 * size, 0, 0);
+  yText.position.set(0, 1.3 * size, 0);
+  zText.position.set(0, 0, 1.3 * size);
+  xText.updateScale(0.35 * size);
+  yText.updateScale(0.35 * size);
+  zText.updateScale(0.35 * size);
+
+  xArrow.scale.set(size, size, size);
+  yArrow.scale.set(size, size, size);
+  zArrow.scale.set(size, size, size);
+
+  return axes;
 }
