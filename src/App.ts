@@ -31,6 +31,7 @@ function App({ model, parameters, onParameterChange, settings }: AppType) {
     elements: van.state(settings?.elements ?? true),
     nodesIndexes: van.state(settings?.nodesIndexes ?? false),
     elementsIndexes: van.state(settings?.elementsIndexes ?? false),
+    orientations: van.state(settings?.orientations ?? false),
     supports: van.state(settings?.supports ?? true),
     loads: van.state(settings?.loads ?? true),
     elementResults: van.state(settings?.elementResults ?? "none"),

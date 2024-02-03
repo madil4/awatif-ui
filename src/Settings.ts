@@ -28,6 +28,7 @@ export function Settings(settingsState: SettingsState) {
   pane.addBinding(settingsState.elementsIndexes, "val", {
     label: "Elements indexes",
   });
+  pane.addBinding(settingsState.orientations, "val", { label: "Orientations" });
   pane.addBinding(settingsState.supports, "val", { label: "Supports" });
   pane.addBinding(settingsState.loads, "val", { label: "Loads" });
   pane.addBinding(settingsState.elementResults, "val", {

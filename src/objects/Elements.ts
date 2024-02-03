@@ -12,6 +12,7 @@ export function Elements(
   );
 
   lines.frustumCulled = false;
+  lines.material.depthTest = false; // don't know why but is solves the rendering order issue
 
   // on settings.elements, model.elements, and model.nodes update
   van.derive(() => {
