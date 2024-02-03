@@ -1,8 +1,7 @@
 import { Pane } from "tweakpane";
-import { Settings } from "./types";
-import { State } from "vanjs-core";
+import { Settings, SettingsState } from "./types";
 
-export function Settings(settings: State<Settings>) {
+export function Settings(settingsState: SettingsState) {
   // init
   const pane = new Pane({ title: "Settings", expanded: false });
   const container = pane.element.parentElement;
@@ -15,39 +14,35 @@ export function Settings(settings: State<Settings>) {
     container.style.width = "300px";
   }
 
-  pane.addBinding(settings.val, "displayScale", {
+  pane.addBinding(settingsState.displayScale, "val", {
     label: "Display scale",
     min: -10,
     max: 10,
     step: 1,
   });
-  pane.addBinding(settings.val, "nodes", { label: "Nodes" });
-  pane.addBinding(settings.val, "elements", { label: "Elements" });
-  pane.addBinding(settings.val, "nodesIndexes", { label: "Nodes indexes" });
-  pane.addBinding(settings.val, "elementsIndexes", {
+  pane.addBinding(settingsState.nodes, "val", { label: "Nodes" });
+  pane.addBinding(settingsState.elements, "val", { label: "Elements" });
+  pane.addBinding(settingsState.nodesIndexes, "val", {
+    label: "Nodes indexes",
+  });
+  pane.addBinding(settingsState.elementsIndexes, "val", {
     label: "Elements indexes",
   });
-  pane.addBinding(settings.val, "supports", { label: "Supports" });
-  pane.addBinding(settings.val, "loads", { label: "Loads" });
-  pane.addBinding(settings.val, "elementResults", {
+  pane.addBinding(settingsState.supports, "val", { label: "Supports" });
+  pane.addBinding(settingsState.loads, "val", { label: "Loads" });
+  pane.addBinding(settingsState.elementResults, "val", {
     options: {
       none: "none",
       normal: "normal",
     },
     label: "Element results",
   });
-  pane.addBinding(settings.val, "nodeResults", {
+  pane.addBinding(settingsState.nodeResults, "val", {
     options: {
       none: "none",
       deformation: "deformation",
       reaction: "reaction",
     },
     label: "Node results",
-  });
-
-  pane.on("change", (e) => {
-    // @ts-ignore
-    settings.val[e.target.key] = e.value;
-    settings.val = { ...settings.val };
   });
 }

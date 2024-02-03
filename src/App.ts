@@ -4,49 +4,45 @@ import {
   App as AppType,
   ModelState,
   Node,
-  Settings as SettingsType,
   ProcessedAssignments,
+  SettingsState,
 } from "./types";
 import { Viewer } from "./Viewer";
 import { Parameters } from "./Parameters";
 import { Settings } from "./Settings";
 import { processAssignments } from "./utils/processAssignments";
 
-function App({
-  model: modelDirect,
-  parameters,
-  onParameterChange,
-  settings: settingsOverwrite,
-}: AppType) {
+function App({ model, parameters, onParameterChange, settings }: AppType) {
   // init
   const modelOnChange = parameters && onParameterChange?.(parameters);
-
-  const model: ModelState = {
-    nodes: van.state<Node[]>(modelDirect?.nodes ?? modelOnChange?.nodes ?? []),
+  const modelState: ModelState = {
+    nodes: van.state<Node[]>(model?.nodes ?? modelOnChange?.nodes ?? []),
     elements: van.state<Element[]>(
-      modelDirect?.elements ?? modelOnChange?.elements ?? []
+      model?.elements ?? modelOnChange?.elements ?? []
     ),
     assignments: van.state<ProcessedAssignments>(
-      processAssignments(
-        modelDirect?.assignments ?? modelOnChange?.assignments ?? []
-      )
+      processAssignments(model?.assignments ?? modelOnChange?.assignments ?? [])
     ),
   };
-  const settings = van.state<Required<SettingsType>>({
-    gridSize: 20,
-    displayScale: 1,
-    nodes: true,
-    elements: true,
-    nodesIndexes: false,
-    elementsIndexes: false,
-    supports: true,
-    loads: true,
-    elementResults: "none",
-    nodeResults: "none",
-    ...settingsOverwrite,
-  });
+  const settingsState: SettingsState = {
+    gridSize: van.state(settings?.gridSize ?? 20),
+    displayScale: van.state(settings?.displayScale ?? 1),
+    nodes: van.state(settings?.nodes ?? true),
+    elements: van.state(settings?.elements ?? true),
+    nodesIndexes: van.state(settings?.nodesIndexes ?? false),
+    elementsIndexes: van.state(settings?.elementsIndexes ?? false),
+    supports: van.state(settings?.supports ?? true),
+    loads: van.state(settings?.loads ?? true),
+    elementResults: van.state(settings?.elementResults ?? "none"),
+    nodeResults: van.state(settings?.nodeResults ?? "none"),
+  };
 
-  if (parameters && onParameterChange)
+  // update
+  Viewer(modelState, settingsState);
+  Settings(settingsState);
+
+  // on parameter change
+  if (parameters && onParameterChange) {
     Parameters(parameters, (e) => {
       // @ts-ignore
       parameters[e.target.key].value = e.value;
@@ -54,13 +50,13 @@ function App({
       const newModel = onParameterChange(parameters);
 
       // consider updating only if there a change instead of a brute change
-      model.nodes.val = newModel.nodes || [];
-      model.elements.val = newModel.elements || [];
-      model.assignments.val = processAssignments(newModel.assignments || []);
+      modelState.nodes.val = newModel.nodes || [];
+      modelState.elements.val = newModel.elements || [];
+      modelState.assignments.val = processAssignments(
+        newModel.assignments || []
+      );
     });
-
-  Viewer(model, settings);
-  Settings(settings);
+  }
 }
 
 export const app = App;

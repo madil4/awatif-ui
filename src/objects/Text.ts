@@ -1,22 +1,28 @@
 import * as THREE from "three";
 
 export class Text extends THREE.Sprite {
-  constructor(
-    text: string,
-    scale: number,
-    color?: string,
-    background?: string
-  ) {
+  private fontHeightPx: number;
+
+  constructor(text: string, color?: string, background?: string) {
     super();
 
     const resolution = 30;
-    const fontHeightPx = resolution * devicePixelRatio;
-    this.material.map = createTexture(text, fontHeightPx, color, background);
+    this.fontHeightPx = resolution * devicePixelRatio;
+    this.material.map = createTexture(
+      text,
+      this.fontHeightPx,
+      color,
+      background
+    );
     this.material.depthTest = false;
 
     this.renderOrder = 99;
+    this.scale.set(this.material.map.image.width / this.fontHeightPx, 1, 1);
+  }
+
+  updateScale(scale: number) {
     this.scale.set(
-      (this.material.map.image.width / fontHeightPx) * scale,
+      (this.material?.map?.image.width / this.fontHeightPx) * scale,
       scale,
       1
     );

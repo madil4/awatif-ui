@@ -1,22 +1,33 @@
 import * as THREE from "three";
-import { Element, Node } from "../types";
+import van from "vanjs-core";
+import { ModelState, SettingsState } from "../types";
 
-export class Elements extends THREE.Line<
-  THREE.BufferGeometry,
-  THREE.LineBasicMaterial
-> {
-  constructor() {
-    super(new THREE.BufferGeometry(), new THREE.LineBasicMaterial());
+export function Elements(
+  model: ModelState,
+  settings: SettingsState
+): THREE.Line<THREE.BufferGeometry, THREE.LineBasicMaterial> {
+  const lines = new THREE.Line(
+    new THREE.BufferGeometry(),
+    new THREE.LineBasicMaterial()
+  );
 
-    this.frustumCulled = false;
-  }
+  lines.frustumCulled = false;
 
-  update(nodes: Node[], elements: Element[]) {
-    const buffer = elements.map((e) => [...nodes[e[0]], ...nodes[e[1]]]).flat();
+  // on settings.elements, model.elements, and model.nodes update
+  van.derive(() => {
+    lines.visible = settings.elements.val;
 
-    this.geometry.setAttribute(
+    if (!settings.elements.val) return;
+
+    const buffer = model.elements.val
+      .map((e) => [...model.nodes.val[e[0]], ...model.nodes.val[e[1]]])
+      .flat();
+
+    lines.geometry.setAttribute(
       "position",
       new THREE.Float32BufferAttribute(buffer, 3)
     );
-  }
+  });
+
+  return lines;
 }
