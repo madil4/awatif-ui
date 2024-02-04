@@ -1,7 +1,9 @@
 {
   "name": "awatif-ui",
-  "version": "2.0.0",
+  "version": "2.0.8",
   "type": "module",
+  "main": "src/App.ts",
+  "types": "src/types.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build"
