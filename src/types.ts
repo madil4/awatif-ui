@@ -59,6 +59,15 @@ export type ProcessedAssignments = {
   distributedLoads: Map<number, DistributedLoadAssignment["distributedLoad"]>;
 };
 
+export type ProcessedAnalysisResults = {
+  normals: Map<number, ElementResult["normal"]>;
+  shearYs: Map<number, ElementResult["shearY"]>;
+  shearZs: Map<number, ElementResult["shearZ"]>;
+  torsions: Map<number, ElementResult["torsion"]>;
+  bendingYs: Map<number, ElementResult["bendingY"]>;
+  bendingZs: Map<number, ElementResult["bendingZ"]>;
+};
+
 // model
 export type Model = {
   nodes?: Node[];
@@ -71,6 +80,7 @@ export type ModelState = {
   nodes: State<Node[]>;
   elements: State<Element[]>;
   assignments: State<ProcessedAssignments>;
+  analysisResults: State<ProcessedAnalysisResults>;
 };
 
 export type Node = [number, number, number];
@@ -126,7 +136,7 @@ type ReactionResult = {
     | [number, number, number]
     | [number, number, number, number, number, number];
 };
-type ElementResult = {
+export type ElementResult = {
   element: number;
   normal?: [number, number];
   shearY?: [number, number];

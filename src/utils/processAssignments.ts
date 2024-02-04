@@ -10,7 +10,7 @@ import {
 export function processAssignments(
   assignments: Assignment[]
 ): ProcessedAssignments {
-  const pa = {
+  const pa: ProcessedAssignments = {
     elasticities: new Map<number, PropertyAssignment["elasticity"]>(),
     areas: new Map<number, PropertyAssignment["area"]>(),
     loads: new Map<number, LoadAssignment["load"]>(),
