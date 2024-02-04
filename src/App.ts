@@ -6,11 +6,13 @@ import {
   Node,
   ProcessedAssignments,
   SettingsState,
+  ProcessedAnalysisResults,
 } from "./types";
 import { Viewer } from "./Viewer";
 import { Parameters } from "./Parameters";
 import { Settings } from "./Settings";
 import { processAssignments } from "./utils/processAssignments";
+import { processAnalysisResults } from "./utils/processAnalysisResults";
 
 function App({ model, parameters, onParameterChange, settings }: AppType) {
   // init
@@ -23,6 +25,12 @@ function App({ model, parameters, onParameterChange, settings }: AppType) {
     assignments: van.state<ProcessedAssignments>(
       processAssignments(model?.assignments ?? modelOnChange?.assignments ?? [])
     ),
+    analysisResults: van.state<ProcessedAnalysisResults>(
+      processAnalysisResults(
+        model?.analysisResults ??
+          modelOnChange?.analysisResults ?? { default: [] }
+      )
+    ),
   };
   const settingsState: SettingsState = {
     gridSize: van.state(settings?.gridSize ?? 20),
@@ -34,7 +42,7 @@ function App({ model, parameters, onParameterChange, settings }: AppType) {
     orientations: van.state(settings?.orientations ?? false),
     supports: van.state(settings?.supports ?? true),
     loads: van.state(settings?.loads ?? true),
-    elementResults: van.state(settings?.elementResults ?? "none"),
+    elementResults: van.state(settings?.elementResults ?? "normal"),
     nodeResults: van.state(settings?.nodeResults ?? "none"),
   };
 
@@ -55,6 +63,9 @@ function App({ model, parameters, onParameterChange, settings }: AppType) {
       modelState.elements.val = newModel.elements || [];
       modelState.assignments.val = processAssignments(
         newModel.assignments || []
+      );
+      modelState.analysisResults.val = processAnalysisResults(
+        newModel.analysisResults || { default: [] }
       );
     });
   }

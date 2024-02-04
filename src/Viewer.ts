@@ -11,6 +11,7 @@ import { NodesIndexes } from "./objects/NodesIndexes";
 import { ElementsIndexes } from "./objects/ElementsIndexes";
 import { Axes } from "./objects/Axes";
 import { Orientations } from "./objects/Orientations";
+import { ElementResults } from "./objects/ElementResults";
 
 export function Viewer(model: ModelState, settings: SettingsState) {
   // init
@@ -45,7 +46,8 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     ElementsIndexes(model, settings, displayScale),
     Supports(model, settings, displayScale),
     Loads(model, settings, displayScale),
-    Orientations(model, settings, displayScale)
+    Orientations(model, settings, displayScale),
+    ElementResults(model, settings)
   );
 
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -91,6 +93,6 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     settings.loads.val;
     settings.elementResults.val;
 
-    renderer.render(scene, camera);
+    setTimeout(() => renderer.render(scene, camera)); // to ensure render is called after all update are done in that event tick
   });
 }
