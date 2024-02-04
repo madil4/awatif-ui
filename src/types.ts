@@ -66,6 +66,8 @@ export type ProcessedAnalysisResults = {
   torsion: Map<number, ElementResult["torsion"]>;
   bendingY: Map<number, ElementResult["bendingY"]>;
   bendingZ: Map<number, ElementResult["bendingZ"]>;
+  deformation: Map<number, DeformationResult["deformation"]>;
+  reaction: Map<number, ReactionResult["reaction"]>;
 };
 
 // model
@@ -124,13 +126,13 @@ export type AnalysisResults = Record<
   string,
   (DeformationResult | ReactionResult | ElementResult)[]
 >;
-type DeformationResult = {
+export type DeformationResult = {
   node: number;
   deformation:
     | [number, number, number]
     | [number, number, number, number, number, number];
 };
-type ReactionResult = {
+export type ReactionResult = {
   node: number;
   reaction:
     | [number, number, number]
