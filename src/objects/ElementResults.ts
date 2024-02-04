@@ -3,7 +3,6 @@ import van, { State } from "vanjs-core";
 import { ModelState, SettingsState } from "../types";
 import { getTransformationMatrix } from "../utils/getTransformationMatrix";
 import { ConstantResult } from "./resultsObjects/ConstantResult";
-import { IResultObject } from "./resultsObjects/IResultObject";
 
 export function ElementResults(
   model: ModelState,
@@ -66,4 +65,9 @@ export function ElementResults(
   });
 
   return group;
+}
+
+export interface IResultObject extends THREE.Group {
+  updateScale(scale: number): void;
+  dispose(): void;
 }

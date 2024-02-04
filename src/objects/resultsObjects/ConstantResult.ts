@@ -3,7 +3,7 @@ import { Node } from "../../types";
 import { roundTo5 } from "../../utils/roundTo5";
 import { Text } from "../Text";
 import { computeCenter } from "../../utils/computeCenter";
-import { IResultObject } from "./IResultObject";
+import { IResultObject } from "../ElementResults";
 
 export class ConstantResult extends THREE.Group implements IResultObject {
   private lines: THREE.Line;
