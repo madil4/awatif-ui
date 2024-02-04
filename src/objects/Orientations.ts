@@ -12,7 +12,7 @@ export function Orientations(
   const group = new THREE.Group();
   const geometry = new THREE.BufferGeometry();
   const material = new THREE.LineBasicMaterial({ vertexColors: true });
-  const gridSize = settings.gridSize.val;
+  const size = 0.05 * settings.gridSize.val * 0.75;
 
   let displayScaleCache = displayScale.val;
 
@@ -54,7 +54,7 @@ export function Orientations(
         getTransformationMatrix(node1, node2)
       );
 
-      const scale = 0.04 * gridSize * displayScaleCache;
+      const scale = size * displayScaleCache;
       axes.scale.set(scale, scale, scale);
 
       group.add(axes);
@@ -65,7 +65,7 @@ export function Orientations(
   van.derive(() => {
     if (!settings.orientations.val) return;
 
-    const scale = 0.04 * gridSize * displayScale.val;
+    const scale = size * displayScale.val;
     group.children.forEach((c) => c.scale.set(scale, scale, scale));
 
     displayScaleCache = displayScale.val;

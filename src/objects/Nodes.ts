@@ -11,9 +11,8 @@ export function Nodes(
     new THREE.BufferGeometry(),
     new THREE.PointsMaterial()
   );
-  const gridSize = settings.gridSize.val;
+  const size = 0.05 * settings.gridSize.val * 0.5;
   points.frustumCulled = false;
-  points.material.size = 0.04 * gridSize;
 
   // on settings.nodes, and model.nodes update: update buffer
   van.derive(() => {
@@ -31,7 +30,7 @@ export function Nodes(
   van.derive(() => {
     if (!settings.nodes.val) return;
 
-    points.material.size = 0.04 * gridSize * displayScale.val;
+    points.material.size = size * displayScale.val;
   });
 
   return points;

@@ -8,7 +8,7 @@ export function Loads(
   displayScale: State<number>
 ): THREE.Group {
   const group = new THREE.Group();
-  const gridSize = settings.gridSize.val;
+  const size = 0.05 * settings.gridSize.val;
 
   let displayScaleCache = displayScale.val;
 
@@ -30,7 +30,7 @@ export function Loads(
         0.3
       );
 
-      const scale = 0.07 * gridSize * displayScaleCache;
+      const scale = size * displayScaleCache;
       arrow.scale.set(scale, scale, scale);
 
       group.add(arrow);
@@ -41,7 +41,7 @@ export function Loads(
   van.derive(() => {
     if (!settings.loads.val) return;
 
-    const scale = 0.07 * gridSize * displayScale.val;
+    const scale = size * displayScale.val;
     group.children.forEach((c) => c.scale.set(scale, scale, scale));
 
     displayScaleCache = displayScale.val;
