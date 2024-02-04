@@ -93,7 +93,7 @@ export class LinearResult extends THREE.Group implements IResultObject {
       const shape = new THREE.Shape()
         .moveTo(0, 0)
         .lineTo(0, normalizedResult[0])
-        .lineTo(length, normalizedResult[1])
+        .lineTo(length, -normalizedResult[1])
         .lineTo(length, 0)
         .lineTo(0, 0);
 
