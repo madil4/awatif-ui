@@ -4,6 +4,7 @@ import { Text } from "./Text";
 export function Axes(gridSize: number): THREE.Group {
   // init
   const axes = new THREE.Group();
+  const size = 0.05 * gridSize * 1; // 0.05 to convert to unit size based on grid size of 20
 
   const xText = new Text("X", "red", "transparent");
   const yText = new Text("Y", "green", "transparent");
@@ -35,20 +36,18 @@ export function Axes(gridSize: number): THREE.Group {
   );
 
   // update
-  axes.add(xArrow, yArrow, zArrow, xText, yText, zText);
-
-  const size = 0.07 * gridSize;
-
   xText.position.set(1.3 * size, 0, 0);
   yText.position.set(0, 1.3 * size, 0);
   zText.position.set(0, 0, 1.3 * size);
-  xText.updateScale(0.35 * size);
-  yText.updateScale(0.35 * size);
-  zText.updateScale(0.35 * size);
+  xText.updateScale(0.4 * size);
+  yText.updateScale(0.4 * size);
+  zText.updateScale(0.4 * size);
 
   xArrow.scale.set(size, size, size);
   yArrow.scale.set(size, size, size);
   zArrow.scale.set(size, size, size);
+
+  axes.add(xArrow, yArrow, zArrow, xText, yText, zText);
 
   return axes;
 }

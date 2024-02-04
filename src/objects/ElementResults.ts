@@ -10,6 +10,7 @@ export function ElementResults(
 ): THREE.Group {
   // init
   const group = new THREE.Group();
+  const size = 0.05 * settings.gridSize.val;
 
   // on settings.elementResults, model.elements, and model.nodes update
   van.derive(() => {
@@ -31,7 +32,7 @@ export function ElementResults(
         )
       );
       const resultValue = result?.[0] ?? 0;
-      const resultNormalized = resultValue / resultMax;
+      const resultNormalized = (resultValue / resultMax) * size;
 
       const shape = new THREE.Shape()
         .moveTo(0, 0)
@@ -81,6 +82,7 @@ export function ElementResults(
           model.nodes.val[element[1]]
         )
       );
+      text.updateScale(size * 0.6);
 
       group.add(text);
     });

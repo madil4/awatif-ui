@@ -9,7 +9,7 @@ export function NodesIndexes(
   displayScale: State<number>
 ): THREE.Group {
   const group = new THREE.Group();
-  const gridSize = settings.gridSize.val;
+  const size = 0.05 * settings.gridSize.val * 0.6;
 
   let displayScaleCache = displayScale.val;
 
@@ -25,7 +25,7 @@ export function NodesIndexes(
       const text = new Text(`${index}`);
 
       text.position.set(...node);
-      text.updateScale(0.05 * gridSize * displayScaleCache);
+      text.updateScale(size * displayScaleCache);
 
       group.add(text);
     });
@@ -36,8 +36,9 @@ export function NodesIndexes(
     if (!settings.nodesIndexes.val) return;
 
     group.children.forEach((c) =>
-      (c as Text).updateScale(0.05 * gridSize * displayScale.val)
+      (c as Text).updateScale(size * displayScale.val)
     );
+
     displayScaleCache = displayScale.val;
   });
 

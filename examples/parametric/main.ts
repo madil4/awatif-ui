@@ -9,7 +9,7 @@ const parameters: Parameters = {
 
 function onParameterChange(parameters: Parameters) {
   let model: Model = {};
-  const propertyAssignment: PropertyAssignment = {
+  const beamProperty: PropertyAssignment = {
     element: 0,
     area: 10,
     elasticity: 10,
@@ -34,9 +34,9 @@ function onParameterChange(parameters: Parameters) {
     { node: 0, support: [true, true, true, true, true, true] },
     { node: 3, support: [true, true, true, true, true, true] },
     { node: 2, load: [10, 0, 0, 0, 0, 0] },
-    { ...propertyAssignment, element: 0 },
-    { ...propertyAssignment, element: 1 },
-    { ...propertyAssignment, element: 2 },
+    { ...beamProperty, element: 0 },
+    { ...beamProperty, element: 1 },
+    { ...beamProperty, element: 2 },
   ];
 
   model.analysisResults = analyze(

@@ -10,7 +10,7 @@ export function Supports(
   const group = new THREE.Group();
   const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
   const material = new THREE.MeshBasicMaterial({ color: "red" });
-  const gridSize = settings.gridSize.val;
+  const size = 0.05 * settings.gridSize.val * 0.6;
 
   let displayScaleCache = displayScale.val;
 
@@ -25,7 +25,7 @@ export function Supports(
       const sphere = new THREE.Mesh(geometry, material);
 
       sphere.position.set(...model.nodes.val[index]);
-      const scale = 0.04 * gridSize * displayScaleCache;
+      const scale = size * displayScaleCache;
       sphere.scale.set(scale, scale, scale);
 
       group.add(sphere);
@@ -36,7 +36,7 @@ export function Supports(
   van.derive(() => {
     if (!settings.supports.val) return;
 
-    const scale = 0.04 * gridSize * displayScale.val;
+    const scale = size * displayScale.val;
     group.children.forEach((c) => c.scale.set(scale, scale, scale));
 
     displayScaleCache = displayScale.val;
