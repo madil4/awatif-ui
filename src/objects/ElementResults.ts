@@ -44,7 +44,7 @@ export function ElementResults(
       // mesh
       const geometry = new THREE.ShapeGeometry(shape);
       const material = new THREE.MeshBasicMaterial({
-        color: resultValue > 0 ? 0x005ce6 : 0xe62e00,
+        color: resultValue > 0 ? 0x005f73 : 0xae2012,
         side: THREE.DoubleSide,
       });
 
@@ -63,15 +63,16 @@ export function ElementResults(
       // lines
       const points = shape.getPoints();
       const geometryPoints = new THREE.BufferGeometry().setFromPoints(points);
-      const line = new THREE.Line(
+      const lines = new THREE.Line(
         geometryPoints,
         new THREE.LineBasicMaterial({ color: "white" })
       );
-      line.position.set(...node1.toArray());
-      line.rotation.setFromRotationMatrix(rotation);
-      line.rotateX(Math.PI / 2);
+      lines.material.depthTest = false; // don't know why but is solves the rendering order issue
+      lines.position.set(...node1.toArray());
+      lines.rotation.setFromRotationMatrix(rotation);
+      lines.rotateX(Math.PI / 2);
 
-      group.add(line);
+      group.add(lines);
 
       // text
       const text = new Text(`${roundTo5(resultValue)}`);

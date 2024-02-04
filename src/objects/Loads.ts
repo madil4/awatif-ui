@@ -25,7 +25,7 @@ export function Loads(
         new THREE.Vector3(...load).normalize(),
         new THREE.Vector3(...model.nodes.val[index]),
         1,
-        0xe6b800,
+        0xee9b00,
         0.3,
         0.3
       );

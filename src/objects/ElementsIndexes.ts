@@ -22,7 +22,7 @@ export function ElementsIndexes(
     group.children.forEach((c) => (c as Text).dispose());
     group.clear();
     model.elements.val.forEach((element, index) => {
-      const text = new Text(`${index}`);
+      const text = new Text(`${index}`, undefined, "#001219");
 
       text.position.set(
         ...computeCenter(

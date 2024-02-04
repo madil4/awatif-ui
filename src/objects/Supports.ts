@@ -9,7 +9,7 @@ export function Supports(
 ): THREE.Group {
   const group = new THREE.Group();
   const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-  const material = new THREE.MeshBasicMaterial({ color: "red" });
+  const material = new THREE.MeshBasicMaterial({ color: 0x9b2226 });
   const size = 0.05 * settings.gridSize.val * 0.6;
 
   let displayScaleCache = displayScale.val;
