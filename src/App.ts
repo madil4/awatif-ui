@@ -30,7 +30,7 @@ function App({ model, parameters, onParameterChange, settings }: AppType) {
     orientations: van.state(settings?.orientations ?? false),
     supports: van.state(settings?.supports ?? true),
     loads: van.state(settings?.loads ?? true),
-    elementResults: van.state(settings?.elementResults ?? "bendingY"),
+    elementResults: van.state(settings?.elementResults ?? "none"),
     nodeResults: van.state(settings?.nodeResults ?? "none"),
   };
 

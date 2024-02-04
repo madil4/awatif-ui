@@ -3,8 +3,8 @@ import { Node } from "../../types";
 import { roundTo5 } from "../../utils/roundTo5";
 import { Text } from "../Text";
 import { computeCenter } from "../../utils/computeCenter";
-import { IResultObject } from "../ElementResults";
 import { compute5thFromFirstPoint } from "../../utils/compute5thFromFirstPoint";
+import { IResultObject } from "./IResultObject";
 
 export class LinearResult extends THREE.Group implements IResultObject {
   private lines: THREE.Line;

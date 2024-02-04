@@ -4,6 +4,7 @@ import { ModelState, SettingsState } from "../types";
 import { getTransformationMatrix } from "../utils/getTransformationMatrix";
 import { ConstantResult } from "./resultObjects/ConstantResult";
 import { LinearResult } from "./resultObjects/LinearResult";
+import { IResultObject } from "./resultObjects/IResultObject";
 
 enum ResultType {
   normal = "normal",
@@ -12,11 +13,6 @@ enum ResultType {
   torsion = "torsion",
   bendingY = "bendingY",
   bendingZ = "bendingZ",
-}
-
-export interface IResultObject extends THREE.Group {
-  updateScale(scale: number): void;
-  dispose(): void;
 }
 
 export function ElementResults(
@@ -40,11 +36,12 @@ export function ElementResults(
 
   // on settings.elementResults, model.elements, and model.nodes update
   van.derive(() => {
-    const resultType =
-      ResultType[settings.elementResults.val as keyof typeof ResultType];
     group.visible = settings.elementResults.val != "none";
 
     if (settings.elementResults.val == "none") return;
+
+    const resultType =
+      ResultType[settings.elementResults.val as keyof typeof ResultType];
 
     group.children.forEach((c) => (c as IResultObject).dispose());
     group.clear();
