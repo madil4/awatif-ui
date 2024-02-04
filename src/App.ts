@@ -1,13 +1,5 @@
 import van from "vanjs-core";
-import {
-  Element,
-  App as AppType,
-  ModelState,
-  Node,
-  ProcessedAssignments,
-  SettingsState,
-  ProcessedAnalysisResults,
-} from "./types";
+import { App as AppType, ModelState, SettingsState } from "./types";
 import { Viewer } from "./Viewer";
 import { Parameters } from "./Parameters";
 import { Settings } from "./Settings";
@@ -17,21 +9,17 @@ import { processAnalysisResults } from "./utils/processAnalysisResults";
 function App({ model, parameters, onParameterChange, settings }: AppType) {
   // init
   const modelOnChange = parameters && onParameterChange?.(parameters);
-  const modelState: ModelState = {
-    nodes: van.state<Node[]>(model?.nodes ?? modelOnChange?.nodes ?? []),
-    elements: van.state<Element[]>(
-      model?.elements ?? modelOnChange?.elements ?? []
+  const modelState: ModelState = van.state({
+    nodes: model?.nodes ?? modelOnChange?.nodes ?? [],
+    elements: model?.elements ?? modelOnChange?.elements ?? [],
+    assignments: processAssignments(
+      model?.assignments ?? modelOnChange?.assignments ?? []
     ),
-    assignments: van.state<ProcessedAssignments>(
-      processAssignments(model?.assignments ?? modelOnChange?.assignments ?? [])
+    analysisResults: processAnalysisResults(
+      model?.analysisResults ??
+        modelOnChange?.analysisResults ?? { default: [] }
     ),
-    analysisResults: van.state<ProcessedAnalysisResults>(
-      processAnalysisResults(
-        model?.analysisResults ??
-          modelOnChange?.analysisResults ?? { default: [] }
-      )
-    ),
-  };
+  });
   const settingsState: SettingsState = {
     gridSize: van.state(settings?.gridSize ?? 20),
     displayScale: van.state(settings?.displayScale ?? 1),
@@ -59,14 +47,14 @@ function App({ model, parameters, onParameterChange, settings }: AppType) {
       const newModel = onParameterChange(parameters);
 
       // consider updating only if there a change instead of a brute change
-      modelState.nodes.val = newModel.nodes || [];
-      modelState.elements.val = newModel.elements || [];
-      modelState.assignments.val = processAssignments(
-        newModel.assignments || []
-      );
-      modelState.analysisResults.val = processAnalysisResults(
-        newModel.analysisResults || { default: [] }
-      );
+      modelState.val = {
+        nodes: newModel.nodes || [],
+        elements: newModel.elements || [],
+        assignments: processAssignments(newModel.assignments || []),
+        analysisResults: processAnalysisResults(
+          newModel.analysisResults || { default: [] }
+        ),
+      };
     });
   }
 }

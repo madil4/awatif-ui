@@ -21,7 +21,7 @@ export function NodesIndexes(
 
     group.children.forEach((c) => (c as Text).dispose());
     group.clear();
-    model.nodes.val.forEach((node, index) => {
+    model.val.nodes.forEach((node, index) => {
       const text = new Text(`${index}`);
 
       text.position.set(...node);

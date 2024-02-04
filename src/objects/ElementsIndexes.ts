@@ -22,13 +22,13 @@ export function ElementsIndexes(
 
     group.children.forEach((c) => (c as Text).dispose());
     group.clear();
-    model.elements.val.forEach((element, index) => {
+    model.val.elements.forEach((element, index) => {
       const text = new Text(`${index}`, undefined, "#001219");
 
       text.position.set(
         ...computeCenter(
-          model.nodes.val[element[0]],
-          model.nodes.val[element[1]]
+          model.val.nodes[element[0]],
+          model.val.nodes[element[1]]
         )
       );
       text.updateScale(size * displayScaleCache);

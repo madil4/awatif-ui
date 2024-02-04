@@ -20,8 +20,8 @@ export function Elements(
 
     if (!settings.elements.val) return;
 
-    const buffer = model.elements.val
-      .map((e) => [...model.nodes.val[e[0]], ...model.nodes.val[e[1]]])
+    const buffer = model.val.elements
+      .map((e) => [...model.val.nodes[e[0]], ...model.val.nodes[e[1]]])
       .flat();
 
     lines.geometry.setAttribute(

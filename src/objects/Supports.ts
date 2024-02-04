@@ -21,10 +21,10 @@ export function Supports(
     if (!settings.supports.val) return;
 
     group.clear();
-    model.assignments.val.supports.forEach((_, index) => {
+    model.val.assignments.supports.forEach((_, index) => {
       const sphere = new THREE.Mesh(geometry, material);
 
-      sphere.position.set(...model.nodes.val[index]);
+      sphere.position.set(...model.val.nodes[index]);
       const scale = size * displayScaleCache;
       sphere.scale.set(scale, scale, scale);
 

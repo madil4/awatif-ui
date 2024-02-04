@@ -44,10 +44,10 @@ export function Orientations(
     if (!settings.orientations.val) return;
 
     group.clear();
-    model.elements.val.forEach((element) => {
+    model.val.elements.forEach((element) => {
       const axes = new THREE.LineSegments(geometry, material);
-      const node1 = model.nodes.val[element[0]];
-      const node2 = model.nodes.val[element[1]];
+      const node1 = model.val.nodes[element[0]];
+      const node2 = model.val.nodes[element[1]];
 
       axes.position.set(...compute5thFromFirstPoint(node1, node2));
       axes.rotation.setFromRotationMatrix(

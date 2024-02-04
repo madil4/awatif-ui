@@ -79,9 +79,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
 
   // on settings or model change: render
   van.derive(() => {
-    model.nodes.val;
-    model.elements.val;
-    model.assignments.val;
+    model.val;
 
     settings.displayScale.val;
     settings.nodes.val;
@@ -93,6 +91,6 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     settings.loads.val;
     settings.elementResults.val;
 
-    setTimeout(() => renderer.render(scene, camera)); // to ensure render is called after all update are done in that event tick
+    setTimeout(() => renderer.render(scene, camera)); // to ensure render is called after all updates are done in that event tick
   });
 }
