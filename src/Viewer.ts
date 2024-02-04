@@ -47,7 +47,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     Supports(model, settings, displayScale),
     Loads(model, settings, displayScale),
     Orientations(model, settings, displayScale),
-    ElementResults(model, settings)
+    ElementResults(model, settings, displayScale)
   );
 
   renderer.setPixelRatio(window.devicePixelRatio);
