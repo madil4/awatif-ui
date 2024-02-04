@@ -1,16 +1,20 @@
 import * as THREE from "three";
-import van from "vanjs-core";
-import { ModelState, SettingsState, Node } from "../types";
+import van, { State } from "vanjs-core";
+import { ModelState, SettingsState } from "../types";
 import { getTransformationMatrix } from "../utils/getTransformationMatrix";
-import { Text } from "./Text";
+import { ConstantResult } from "./resultsObjects/ConstantResult";
+import { IResultObject } from "./resultsObjects/IResultObject";
 
 export function ElementResults(
   model: ModelState,
-  settings: SettingsState
+  settings: SettingsState,
+  displayScale: State<number>
 ): THREE.Group {
   // init
   const group = new THREE.Group();
   const size = 0.05 * settings.gridSize.val;
+
+  let displayScaleCache = displayScale.val;
 
   // on settings.elementResults, model.elements, and model.nodes update
   van.derive(() => {
@@ -18,84 +22,49 @@ export function ElementResults(
 
     if (settings.elementResults.val == "none") return;
 
-    group.children.forEach((c) => (c as THREE.Mesh).geometry.dispose());
+    group.children.forEach((c) => (c as IResultObject).dispose());
     group.clear();
 
     model.analysisResults.val["normals"].forEach((result, index) => {
       const element = model.elements.val[index];
-      const node1 = new THREE.Vector3(...model.nodes.val[element[0]]);
-      const node2 = new THREE.Vector3(...model.nodes.val[element[1]]);
-      const length = node2.distanceTo(node1);
-      const resultMax = Math.max(
-        ...[...model.analysisResults.val["normals"].values()].map((v) =>
-          Math.abs(v?.[0] ?? 0)
-        )
+      const node1 = model.nodes.val[element[0]];
+      const node2 = model.nodes.val[element[1]];
+      const length = new THREE.Vector3(...node2).distanceTo(
+        new THREE.Vector3(...node1)
       );
-      const resultValue = result?.[0] ?? 0;
-      const resultNormalized = (resultValue / resultMax) * size;
-
-      const shape = new THREE.Shape()
-        .moveTo(0, 0)
-        .lineTo(0, resultNormalized)
-        .lineTo(length, resultNormalized)
-        .lineTo(length, 0)
-        .lineTo(0, 0);
-
-      // mesh
-      const geometry = new THREE.ShapeGeometry(shape);
-      const material = new THREE.MeshBasicMaterial({
-        color: resultValue > 0 ? 0x005f73 : 0xae2012,
-        side: THREE.DoubleSide,
-      });
-
-      const mesh = new THREE.Mesh(geometry, material);
-
-      mesh.position.set(...node1.toArray());
-      const rotation = getTransformationMatrix(
-        node1.toArray(),
-        node2.toArray()
+      const maxResult = Math.max(
+        ...[...model.analysisResults.val["normals"].values()]
+          .flat()
+          .map((n) => Math.abs(n ?? 0))
       );
-      mesh.rotation.setFromRotationMatrix(rotation);
-      mesh.rotateX(Math.PI / 2);
-
-      group.add(mesh);
-
-      // lines
-      const points = shape.getPoints();
-      const geometryPoints = new THREE.BufferGeometry().setFromPoints(points);
-      const lines = new THREE.Line(
-        geometryPoints,
-        new THREE.LineBasicMaterial({ color: "white" })
+      const normalizedResult = result?.map((n) => (n / maxResult) * size);
+      const rotation = getTransformationMatrix(node1, node2);
+      const resultObject = new ConstantResult(
+        node1,
+        node2,
+        length,
+        rotation,
+        result ?? [0, 0],
+        normalizedResult ?? [0, 0],
+        size
       );
-      lines.material.depthTest = false; // don't know why but is solves the rendering order issue
-      lines.position.set(...node1.toArray());
-      lines.rotation.setFromRotationMatrix(rotation);
-      lines.rotateX(Math.PI / 2);
 
-      group.add(lines);
+      resultObject.updateScale(size * displayScaleCache);
 
-      // text
-      const text = new Text(`${roundTo5(resultValue)}`);
-
-      text.position.set(
-        ...computeCenter(
-          model.nodes.val[element[0]],
-          model.nodes.val[element[1]]
-        )
-      );
-      text.updateScale(size * 0.6);
-
-      group.add(text);
+      group.add(resultObject);
     });
   });
 
+  // on settings.support and setting.displayScale change
+  van.derive(() => {
+    if (settings.elementResults.val == "none") return;
+
+    group.children.forEach((c) =>
+      (c as IResultObject).updateScale(size * displayScale.val)
+    );
+
+    displayScaleCache = displayScale.val;
+  });
+
   return group;
-}
-
-function computeCenter(point1: Node, point2: Node): Node {
-  return point1?.map((v, i) => (v + point2[i]) * 0.5) as Node;
-}
-
-function roundTo5(number: number): number {
-  return Math.round(number * 10000) / 10000;
 }

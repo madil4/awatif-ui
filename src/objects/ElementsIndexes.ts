@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import van, { State } from "vanjs-core";
-import { ModelState, SettingsState, Node } from "../types";
+import { ModelState, SettingsState } from "../types";
 import { Text } from "./Text";
+import { computeCenter } from "../utils/computeCenter";
 
 export function ElementsIndexes(
   model: ModelState,
@@ -48,8 +49,4 @@ export function ElementsIndexes(
   });
 
   return group;
-}
-
-function computeCenter(point1: Node, point2: Node): Node {
-  return point1?.map((v, i) => (v + point2[i]) * 0.5) as Node;
 }
