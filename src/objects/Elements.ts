@@ -5,8 +5,8 @@ import { ModelState, SettingsState } from "../types";
 export function Elements(
   model: ModelState,
   settings: SettingsState
-): THREE.Line<THREE.BufferGeometry, THREE.LineBasicMaterial> {
-  const lines = new THREE.Line(
+): THREE.LineSegments<THREE.BufferGeometry, THREE.LineBasicMaterial> {
+  const lines = new THREE.LineSegments(
     new THREE.BufferGeometry(),
     new THREE.LineBasicMaterial()
   );
