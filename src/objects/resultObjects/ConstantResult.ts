@@ -3,7 +3,7 @@ import { Node } from "../../types";
 import { roundTo5 } from "../../utils/roundTo5";
 import { Text } from "../Text";
 import { computeCenter } from "../../utils/computeCenter";
-import { IResultObject } from "./IResultObject";
+import { IResultObject } from "../ElementResults";
 
 export class ConstantResult extends THREE.Group implements IResultObject {
   private lines: THREE.Line;
@@ -16,7 +16,8 @@ export class ConstantResult extends THREE.Group implements IResultObject {
     length: number,
     rotation: THREE.Matrix4,
     result: [number, number],
-    normalizedResult: number[]
+    normalizedResult: number[],
+    flipAxis: boolean
   ) {
     super();
 
@@ -37,7 +38,7 @@ export class ConstantResult extends THREE.Group implements IResultObject {
 
     this.lines.position.set(...node1);
     this.lines.rotation.setFromRotationMatrix(rotation);
-    this.lines.rotateX(Math.PI / 2);
+    if (flipAxis) this.lines.rotateX(Math.PI / 2);
 
     this.add(this.lines);
 
@@ -52,7 +53,7 @@ export class ConstantResult extends THREE.Group implements IResultObject {
 
     this.mesh.position.set(...node1);
     this.mesh.rotation.setFromRotationMatrix(rotation);
-    this.mesh.rotateX(Math.PI / 2);
+    if (flipAxis) this.mesh.rotateX(Math.PI / 2);
 
     this.add(this.mesh);
 
@@ -65,8 +66,8 @@ export class ConstantResult extends THREE.Group implements IResultObject {
   }
 
   updateScale(scale: number) {
-    this.lines.scale.set(1, scale, 1);
-    this.mesh.scale.set(1, scale, 1);
+    this.lines.scale.set(1, scale * 2, 1);
+    this.mesh.scale.set(1, scale * 2, 1);
     this.text.updateScale(scale * 0.6);
   }
 

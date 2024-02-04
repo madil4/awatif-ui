@@ -2,8 +2,22 @@ import * as THREE from "three";
 import van, { State } from "vanjs-core";
 import { ModelState, SettingsState } from "../types";
 import { getTransformationMatrix } from "../utils/getTransformationMatrix";
-import { ConstantResult } from "./resultsObjects/ConstantResult";
-import { IResultObject } from "./resultsObjects/IResultObject";
+import { ConstantResult } from "./resultObjects/ConstantResult";
+import { LinearResult } from "./resultObjects/LinearResult";
+
+enum ResultType {
+  normal = "normal",
+  shearY = "shearY",
+  shearZ = "shearZ",
+  torsion = "torsion",
+  bendingY = "bendingY",
+  bendingZ = "bendingZ",
+}
+
+export interface IResultObject extends THREE.Group {
+  updateScale(scale: number): void;
+  dispose(): void;
+}
 
 export function ElementResults(
   model: ModelState,
@@ -13,11 +27,21 @@ export function ElementResults(
   // init
   const group = new THREE.Group();
   const size = 0.05 * settings.gridSize.val;
+  const resultObjects = {
+    [ResultType.normal]: ConstantResult,
+    [ResultType.shearY]: ConstantResult,
+    [ResultType.shearZ]: ConstantResult,
+    [ResultType.torsion]: ConstantResult,
+    [ResultType.bendingY]: LinearResult,
+    [ResultType.bendingZ]: LinearResult,
+  };
 
   let displayScaleCache = displayScale.val;
 
   // on settings.elementResults, model.elements, and model.nodes update
   van.derive(() => {
+    const resultType =
+      ResultType[settings.elementResults.val as keyof typeof ResultType];
     group.visible = settings.elementResults.val != "none";
 
     if (settings.elementResults.val == "none") return;
@@ -25,7 +49,7 @@ export function ElementResults(
     group.children.forEach((c) => (c as IResultObject).dispose());
     group.clear();
 
-    model.val.analysisResults["normals"].forEach((result, index) => {
+    model.val.analysisResults[resultType].forEach((result, index) => {
       const element = model.val.elements[index];
       const node1 = model.val.nodes[element[0]];
       const node2 = model.val.nodes[element[1]];
@@ -33,19 +57,29 @@ export function ElementResults(
         new THREE.Vector3(...node1)
       );
       const maxResult = Math.max(
-        ...[...model.val.analysisResults["normals"].values()]
+        ...[...model.val.analysisResults[resultType].values()]
           .flat()
           .map((n) => Math.abs(n ?? 0))
       );
-      const normalizedResult = result?.map((n) => n / maxResult);
+      const normalizedResult = result?.map(
+        (n) => n / (maxResult === 0 ? 1 : maxResult)
+      );
       const rotation = getTransformationMatrix(node1, node2);
-      const resultObject = new ConstantResult(
+      const resultObject = new resultObjects[resultType](
         node1,
         node2,
         length,
         rotation,
         result ?? [0, 0],
-        normalizedResult ?? [0, 0]
+        normalizedResult ?? [0, 0],
+        [
+          ResultType.normal,
+          ResultType.shearZ,
+          ResultType.torsion,
+          ResultType.bendingY,
+        ].includes(resultType)
+          ? true
+          : false
       );
 
       resultObject.updateScale(size * displayScaleCache);

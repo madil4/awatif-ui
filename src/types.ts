@@ -60,12 +60,12 @@ export type ProcessedAssignments = {
 };
 
 export type ProcessedAnalysisResults = {
-  normals: Map<number, ElementResult["normal"]>;
-  shearYs: Map<number, ElementResult["shearY"]>;
-  shearZs: Map<number, ElementResult["shearZ"]>;
-  torsions: Map<number, ElementResult["torsion"]>;
-  bendingYs: Map<number, ElementResult["bendingY"]>;
-  bendingZs: Map<number, ElementResult["bendingZ"]>;
+  normal: Map<number, ElementResult["normal"]>;
+  shearY: Map<number, ElementResult["shearY"]>;
+  shearZ: Map<number, ElementResult["shearZ"]>;
+  torsion: Map<number, ElementResult["torsion"]>;
+  bendingY: Map<number, ElementResult["bendingY"]>;
+  bendingZ: Map<number, ElementResult["bendingZ"]>;
 };
 
 // model

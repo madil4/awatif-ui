@@ -35,6 +35,11 @@ export function Settings(settingsState: SettingsState) {
     options: {
       none: "none",
       normal: "normal",
+      shearY: "shearY",
+      shearZ: "shearZ",
+      torsion: "torsion",
+      bendingY: "bendingY",
+      bendingZ: "bendingZ",
     },
     label: "Element results",
   });
