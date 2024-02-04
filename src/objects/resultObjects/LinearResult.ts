@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { Node } from "../../types";
 import { roundTo5 } from "../../utils/roundTo5";
 import { Text } from "../Text";
-import { computeCenter } from "../../utils/computeCenter";
 import { compute5thFromFirstPoint } from "../../utils/compute5thFromFirstPoint";
 import { IResultObject } from "./IResultObject";
 
@@ -12,7 +11,7 @@ export class LinearResult extends THREE.Group implements IResultObject {
   private mesh: THREE.Mesh;
   private mesh2?: THREE.Mesh;
   private text: Text;
-  private text2?: Text;
+  private text2: Text;
 
   constructor(
     node1: Node,
@@ -27,6 +26,15 @@ export class LinearResult extends THREE.Group implements IResultObject {
 
     const intersection = (result[0] * length) / (result[0] + result[1]);
     const twoSegments = intersection < length;
+
+    // text
+    this.text = new Text(`${roundTo5(result[0])}`);
+    this.text2 = new Text(`${roundTo5(-result[1])}`);
+
+    this.text.position.set(...compute5thFromFirstPoint(node1, node2));
+    this.text2.position.set(...compute5thFromFirstPoint(node2, node1));
+
+    this.add(this.text, this.text2);
 
     if (twoSegments) {
       const shape = new THREE.Shape()
@@ -81,20 +89,11 @@ export class LinearResult extends THREE.Group implements IResultObject {
       if (flipAxis) this.mesh2.rotateX(Math.PI / 2);
 
       this.add(this.mesh, this.mesh2);
-
-      // text
-      this.text = new Text(`${roundTo5(result[0])}`);
-      this.text2 = new Text(`${roundTo5(-result[1])}`);
-
-      this.text.position.set(...compute5thFromFirstPoint(node1, node2));
-      this.text2.position.set(...compute5thFromFirstPoint(node2, node1));
-
-      this.add(this.text, this.text2);
     } else {
       const shape = new THREE.Shape()
         .moveTo(0, 0)
         .lineTo(0, normalizedResult[0])
-        .lineTo(length, normalizedResult[0])
+        .lineTo(length, normalizedResult[1])
         .lineTo(length, 0)
         .lineTo(0, 0);
 
@@ -126,13 +125,6 @@ export class LinearResult extends THREE.Group implements IResultObject {
       if (flipAxis) this.mesh.rotateX(Math.PI / 2);
 
       this.add(this.mesh);
-
-      // text
-      this.text = new Text(`${roundTo5(result[0])}`);
-
-      this.text.position.set(...computeCenter(node1, node2));
-
-      this.add(this.text);
     }
   }
 
@@ -142,7 +134,7 @@ export class LinearResult extends THREE.Group implements IResultObject {
     this.mesh.scale.set(1, scale * 2, 1);
     this.mesh2?.scale.set(1, scale * 2, 1);
     this.text.updateScale(scale * 0.6);
-    this.text2?.updateScale(scale * 0.6);
+    this.text2.updateScale(scale * 0.6);
   }
 
   dispose() {
@@ -155,6 +147,6 @@ export class LinearResult extends THREE.Group implements IResultObject {
     (this.mesh.material as THREE.MeshBasicMaterial).dispose();
     (this.mesh2?.material as THREE.MeshBasicMaterial)?.dispose();
     this.text.dispose();
-    this.text2?.dispose();
+    this.text2.dispose();
   }
 }
