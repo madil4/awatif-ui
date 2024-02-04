@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import van, { State } from "vanjs-core";
-import { ModelState, SettingsState, Node } from "../types";
+import { ModelState, SettingsState } from "../types";
 import { getTransformationMatrix } from "../utils/getTransformationMatrix";
+import { compute5thFromFirstPoint } from "../utils/compute5thFromFirstPoint";
 
 export function Orientations(
   model: ModelState,
@@ -72,8 +73,4 @@ export function Orientations(
   });
 
   return group;
-}
-
-function compute5thFromFirstPoint(point1: Node, point2: Node): Node {
-  return point1?.map((v, i) => (4 * v + point2[i]) / 5) as Node; // from gptChat
 }
