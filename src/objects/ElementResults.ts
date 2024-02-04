@@ -25,15 +25,15 @@ export function ElementResults(
     group.children.forEach((c) => (c as IResultObject).dispose());
     group.clear();
 
-    model.analysisResults.val["normals"].forEach((result, index) => {
-      const element = model.elements.val[index];
-      const node1 = model.nodes.val[element[0]];
-      const node2 = model.nodes.val[element[1]];
+    model.val.analysisResults["normals"].forEach((result, index) => {
+      const element = model.val.elements[index];
+      const node1 = model.val.nodes[element[0]];
+      const node2 = model.val.nodes[element[1]];
       const length = new THREE.Vector3(...node2).distanceTo(
         new THREE.Vector3(...node1)
       );
       const maxResult = Math.max(
-        ...[...model.analysisResults.val["normals"].values()]
+        ...[...model.val.analysisResults["normals"].values()]
           .flat()
           .map((n) => Math.abs(n ?? 0))
       );
@@ -52,6 +52,8 @@ export function ElementResults(
 
       group.add(resultObject);
     });
+
+    console.log("element results");
   });
 
   // on settings.support and setting.displayScale change

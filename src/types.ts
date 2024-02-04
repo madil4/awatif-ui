@@ -76,12 +76,12 @@ export type Model = {
   analysisResults?: AnalysisResults;
 };
 
-export type ModelState = {
-  nodes: State<Node[]>;
-  elements: State<Element[]>;
-  assignments: State<ProcessedAssignments>;
-  analysisResults: State<ProcessedAnalysisResults>;
-};
+export type ModelState = State<{
+  nodes: Node[];
+  elements: Element[];
+  assignments: ProcessedAssignments;
+  analysisResults: ProcessedAnalysisResults;
+}>;
 
 export type Node = [number, number, number];
 export type Element = [number, number];

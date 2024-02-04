@@ -20,10 +20,10 @@ export function Loads(
 
     group.children.forEach((o) => (o as THREE.ArrowHelper).dispose());
     group.clear();
-    model.assignments.val.loads.forEach((load, index) => {
+    model.val.assignments.loads.forEach((load, index) => {
       const arrow = new THREE.ArrowHelper(
         new THREE.Vector3(...load).normalize(),
-        new THREE.Vector3(...model.nodes.val[index]),
+        new THREE.Vector3(...model.val.nodes[index]),
         1,
         0xee9b00,
         0.3,

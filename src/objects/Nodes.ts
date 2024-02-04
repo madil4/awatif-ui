@@ -22,7 +22,7 @@ export function Nodes(
 
     points.geometry.setAttribute(
       "position",
-      new THREE.Float32BufferAttribute(model.nodes.val.flat(), 3)
+      new THREE.Float32BufferAttribute(model.val.nodes.flat(), 3)
     );
   });
 
