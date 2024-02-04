@@ -1,5 +1,7 @@
 import { State } from "vanjs-core";
 
+export function app({}: App): void;
+
 // app
 export type App = {
   model?: Model;
