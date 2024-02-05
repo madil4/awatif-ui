@@ -3,6 +3,7 @@ import { IResultObject } from "./IResultObject";
 import { Text } from "../Text";
 import { Node } from "../../types";
 import { roundTo5 } from "../../utils/roundTo5";
+import { ResultType } from "../NodeResults";
 
 export class NodeResult extends THREE.Group implements IResultObject {
   private xArrow?: THREE.ArrowHelper;
@@ -17,18 +18,26 @@ export class NodeResult extends THREE.Group implements IResultObject {
 
   constructor(
     node: Node,
+    resultType: ResultType,
     result:
       | [number, number, number]
       | [number, number, number, number, number, number]
   ) {
     super();
     // init
-    if (result[0]) this.xText1 = new Text("Fx: " + roundTo5(result[0]));
-    if (result[3]) this.xText2 = new Text("Mx: " + roundTo5(result[3]));
-    if (result[1]) this.yText1 = new Text("Fy: " + roundTo5(result[1]));
-    if (result[4]) this.yText2 = new Text("My: " + roundTo5(result[4]));
-    if (result[2]) this.zText1 = new Text("Fz: " + roundTo5(result[2]));
-    if (result[5]) this.zText2 = new Text("Mz: " + roundTo5(result[5]));
+    const isR = resultType === ResultType.reaction;
+    if (result[0])
+      this.xText1 = new Text(`${isR ? "Fx" : "Dx"}: ` + roundTo5(result[0]));
+    if (result[3])
+      this.xText2 = new Text(`${isR ? "Mx" : "Rx"}: ` + roundTo5(result[3]));
+    if (result[1])
+      this.yText1 = new Text(`${isR ? "Fy" : "Dy"}: ` + roundTo5(result[1]));
+    if (result[4])
+      this.yText2 = new Text(`${isR ? "My" : "Ry"}: ` + roundTo5(result[4]));
+    if (result[2])
+      this.zText1 = new Text(`${isR ? "Fz" : "Dz"}: ` + roundTo5(result[2]));
+    if (result[5])
+      this.zText2 = new Text(`${isR ? "Mz" : "Rz"}: ` + roundTo5(result[5]));
 
     if (result[0] || result[3])
       this.xArrow = new THREE.ArrowHelper(

@@ -4,7 +4,7 @@ import { ModelState, SettingsState, Node } from "../types";
 import { IResultObject } from "./resultObjects/IResultObject";
 import { NodeResult } from "./resultObjects/NodeResult";
 
-enum ResultType {
+export enum ResultType {
   deformation = "deformation",
   reaction = "reaction",
 }
@@ -34,7 +34,7 @@ export function NodeResults(
       ResultType[settings.nodeResults.val as keyof typeof ResultType];
 
     model.val.analysisResults[resultType].forEach((result, index) => {
-      const nodeResult = new NodeResult(nodes.val[index], result);
+      const nodeResult = new NodeResult(nodes.val[index], resultType, result);
 
       nodeResult.updateScale(size * displayScaleCache);
 
