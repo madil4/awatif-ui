@@ -9,6 +9,8 @@ export class ConstantResult extends THREE.Group implements IResultObject {
   private lines: THREE.Line;
   private mesh: THREE.Mesh;
   private text: Text;
+  private textPosition: Node;
+  private normalizedResult: number[];
 
   constructor(
     node1: Node,
@@ -60,7 +62,10 @@ export class ConstantResult extends THREE.Group implements IResultObject {
     // text
     this.text = new Text(`${roundTo5(result[0])}`);
 
-    this.text.position.set(...getCenter(node1, node2));
+    this.normalizedResult = normalizedResult;
+    this.textPosition = getCenter(node1, node2);
+    this.text.position.set(...this.textPosition);
+    this.text.rotation.setFromRotationMatrix(rotation);
 
     this.add(this.text);
   }
@@ -69,6 +74,10 @@ export class ConstantResult extends THREE.Group implements IResultObject {
     this.lines.scale.set(1, scale * 2, 1);
     this.mesh.scale.set(1, scale * 2, 1);
     this.text.updateScale(scale * 0.6);
+
+    // adjust text position when scaling
+    this.text.position.set(...this.textPosition);
+    this.text.translateZ(this.normalizedResult[0] * 2.5 * scale);
   }
 
   dispose() {

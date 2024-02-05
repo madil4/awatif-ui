@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { Node } from "../../types";
 import { roundTo5 } from "../../utils/roundTo5";
 import { Text } from "../Text";
-import { get5thFromFirstPoint } from "../../utils/get5thFromFirstPoint";
+import { get10thFromFirstPoint } from "../../utils/get5thFromFirstPoint";
 import { IResultObject } from "./IResultObject";
 
 export class LinearResult extends THREE.Group implements IResultObject {
@@ -12,6 +12,9 @@ export class LinearResult extends THREE.Group implements IResultObject {
   private mesh2?: THREE.Mesh;
   private text: Text;
   private text2: Text;
+  private textPosition: Node;
+  private text2Position: Node;
+  private normalizedResult: number[];
 
   constructor(
     node1: Node,
@@ -31,8 +34,13 @@ export class LinearResult extends THREE.Group implements IResultObject {
     this.text = new Text(`${roundTo5(result[0])}`);
     this.text2 = new Text(`${roundTo5(-result[1])}`);
 
-    this.text.position.set(...get5thFromFirstPoint(node1, node2));
-    this.text2.position.set(...get5thFromFirstPoint(node2, node1));
+    this.normalizedResult = normalizedResult;
+    this.textPosition = get10thFromFirstPoint(node1, node2);
+    this.text2Position = get10thFromFirstPoint(node2, node1);
+    this.text.position.set(...this.textPosition);
+    this.text2.position.set(...this.text2Position);
+    this.text.rotation.setFromRotationMatrix(rotation);
+    this.text2.rotation.setFromRotationMatrix(rotation);
 
     this.add(this.text, this.text2);
 
@@ -135,6 +143,12 @@ export class LinearResult extends THREE.Group implements IResultObject {
     this.mesh2?.scale.set(1, scale * 2, 1);
     this.text.updateScale(scale * 0.6);
     this.text2.updateScale(scale * 0.6);
+
+    // adjust text position when scaling
+    this.text.position.set(...this.textPosition);
+    this.text2.position.set(...this.text2Position);
+    this.text.translateZ(this.normalizedResult[0] * 2.5 * scale);
+    this.text2.translateZ(-this.normalizedResult[1] * 2.5 * scale);
   }
 
   dispose() {
