@@ -2,7 +2,7 @@ import * as THREE from "three";
 import van, { State } from "vanjs-core";
 import { ModelState, SettingsState, Node } from "../types";
 import { getTransformationMatrix } from "../utils/getTransformationMatrix";
-import { get5thFromFirstPoint } from "../utils/get5thFromFirstPoint";
+import { get10thFromFirstPoint } from "../utils/get5thFromFirstPoint";
 
 export function Orientations(
   nodes: State<Node[]>,
@@ -51,7 +51,7 @@ export function Orientations(
       const node1 = nodes.val[element[0]];
       const node2 = nodes.val[element[1]];
 
-      axes.position.set(...get5thFromFirstPoint(node1, node2));
+      axes.position.set(...get10thFromFirstPoint(node1, node2));
       axes.rotation.setFromRotationMatrix(
         getTransformationMatrix(node1, node2)
       );
