@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import van from "vanjs-core";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { ModelState, SettingsState } from "./types";
+import { ModelState, SettingsState, Node } from "./types";
 import { Nodes } from "./objects/Nodes";
 import { Elements } from "./objects/Elements";
 import { Grid } from "./objects/Grid";
@@ -36,20 +36,28 @@ export function Viewer(model: ModelState, settings: SettingsState) {
       ? settings.displayScale.val
       : -1 / settings.displayScale.val
   );
+  const nodes = van.derive(() => {
+    if (!settings.deformedShape.val) return model.val.nodes;
+
+    return model.val.nodes.map((node, index) => {
+      const d = model.val.analysisResults.deformation.get(index) ?? [0, 0, 0];
+      return node.map((n, i) => n + d[i]) as Node;
+    });
+  });
 
   // update
   scene.add(
     Grid(gridSize),
     Axes(gridSize),
-    Nodes(model, settings, displayScale),
-    Elements(model, settings),
-    NodesIndexes(model, settings, displayScale),
-    ElementsIndexes(model, settings, displayScale),
-    Supports(model, settings, displayScale),
-    Loads(model, settings, displayScale),
-    Orientations(model, settings, displayScale),
-    ElementResults(model, settings, displayScale),
-    NodeResults(model, settings, displayScale)
+    Nodes(nodes, settings, displayScale),
+    Elements(nodes, model, settings),
+    NodesIndexes(nodes, settings, displayScale),
+    ElementsIndexes(nodes, model, settings, displayScale),
+    Supports(nodes, model, settings, displayScale),
+    Loads(nodes, model, settings, displayScale),
+    Orientations(nodes, model, settings, displayScale),
+    ElementResults(nodes, model, settings, displayScale),
+    NodeResults(nodes, model, settings, displayScale)
   );
 
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -91,6 +99,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
     settings.orientations.val;
     settings.supports.val;
     settings.loads.val;
+    settings.deformedShape.val;
     settings.elementResults.val;
     settings.nodeResults.val;
 

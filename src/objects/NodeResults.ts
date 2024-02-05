@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import van, { State } from "vanjs-core";
-import { ModelState, SettingsState } from "../types";
+import { ModelState, SettingsState, Node } from "../types";
 import { IResultObject } from "./resultObjects/IResultObject";
 import { NodeResult } from "./resultObjects/NodeResult";
 
@@ -10,6 +10,7 @@ enum ResultType {
 }
 
 export function NodeResults(
+  nodes: State<Node[]>,
   model: ModelState,
   settings: SettingsState,
   displayScale: State<number>
@@ -33,7 +34,7 @@ export function NodeResults(
       ResultType[settings.nodeResults.val as keyof typeof ResultType];
 
     model.val.analysisResults[resultType].forEach((result, index) => {
-      const nodeResult = new NodeResult(model.val.nodes[index], result);
+      const nodeResult = new NodeResult(nodes.val[index], result);
 
       nodeResult.updateScale(size * displayScaleCache);
 

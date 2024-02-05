@@ -1,10 +1,10 @@
 import * as THREE from "three";
 import van, { State } from "vanjs-core";
-import { ModelState, SettingsState } from "../types";
+import { SettingsState, Node } from "../types";
 import { Text } from "./Text";
 
 export function NodesIndexes(
-  model: ModelState,
+  nodes: State<Node[]>,
   settings: SettingsState,
   displayScale: State<number>
 ): THREE.Group {
@@ -21,7 +21,7 @@ export function NodesIndexes(
 
     group.children.forEach((c) => (c as Text).dispose());
     group.clear();
-    model.val.nodes.forEach((node, index) => {
+    nodes.val.forEach((node, index) => {
       const text = new Text(`${index}`);
 
       text.position.set(...node);
