@@ -20,9 +20,13 @@ export function NodeResults(
   const size = 0.05 * settings.gridSize.val;
 
   let displayScaleCache = displayScale.val;
+  let nodesCache = nodes.val;
+
+  van.derive(() => (nodesCache = nodes.val));
 
   // on settings.nodeResults, model.elements, and model.nodes update
   van.derive(() => {
+    settings.deformedShape.val; // trigger update when changed
     group.visible = settings.nodeResults.val != "none";
 
     if (settings.nodeResults.val == "none") return;
@@ -34,7 +38,7 @@ export function NodeResults(
       ResultType[settings.nodeResults.val as keyof typeof ResultType];
 
     model.val.analysisResults[resultType].forEach((result, index) => {
-      const nodeResult = new NodeResult(nodes.val[index], resultType, result);
+      const nodeResult = new NodeResult(nodesCache[index], resultType, result);
 
       nodeResult.updateScale(size * displayScaleCache);
 

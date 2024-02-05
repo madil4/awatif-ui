@@ -17,6 +17,9 @@ export function Orientations(
   const size = 0.05 * settings.gridSize.val * 0.75;
 
   let displayScaleCache = displayScale.val;
+  let nodesCache = nodes.val;
+
+  van.derive(() => (nodesCache = nodes.val));
 
   // update
   const o = [0, 0, 0];
@@ -41,6 +44,7 @@ export function Orientations(
 
   // on settings.orientations, model.elements, and model.nodes update
   van.derive(() => {
+    settings.deformedShape.val; // trigger update when changed
     group.visible = settings.orientations.val;
 
     if (!settings.orientations.val) return;
@@ -48,8 +52,8 @@ export function Orientations(
     group.clear();
     model.val.elements.forEach((element) => {
       const axes = new THREE.LineSegments(geometry, material);
-      const node1 = nodes.val[element[0]];
-      const node2 = nodes.val[element[1]];
+      const node1 = nodesCache[element[0]];
+      const node2 = nodesCache[element[1]];
 
       axes.position.set(...get10thFromFirstPoint(node1, node2));
       axes.rotation.setFromRotationMatrix(

@@ -12,9 +12,13 @@ export function Loads(
   const size = 0.05 * settings.gridSize.val;
 
   let displayScaleCache = displayScale.val;
+  let nodesCache = nodes.val;
+
+  van.derive(() => (nodesCache = nodes.val));
 
   // on settings.loads, model.assignment, and model.nodes update: replace arrows
   van.derive(() => {
+    settings.deformedShape.val; // trigger update when changed
     group.visible = settings.loads.val;
 
     if (!settings.loads.val) return;
@@ -24,7 +28,7 @@ export function Loads(
     model.val.assignments.loads.forEach((load, index) => {
       const arrow = new THREE.ArrowHelper(
         new THREE.Vector3(...load).normalize(),
-        new THREE.Vector3(...nodes.val[index]),
+        new THREE.Vector3(...nodesCache[index]),
         1,
         0xee9b00,
         0.3,

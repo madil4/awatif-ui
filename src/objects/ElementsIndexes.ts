@@ -14,9 +14,13 @@ export function ElementsIndexes(
   const size = 0.05 * settings.gridSize.val * 0.6;
 
   let displayScaleCache = displayScale.val;
+  let nodesCache = nodes.val;
+
+  van.derive(() => (nodesCache = nodes.val));
 
   // on settings.elementsIndexes, model.elements, and model.nodes update: replace texts
   van.derive(() => {
+    settings.deformedShape.val; // trigger update when changed
     group.visible = settings.elementsIndexes.val;
 
     if (!settings.elementsIndexes.val) return;
@@ -27,7 +31,7 @@ export function ElementsIndexes(
       const text = new Text(`${index}`, undefined, "#001219");
 
       text.position.set(
-        ...getCenter(nodes.val[element[0]], nodes.val[element[1]])
+        ...getCenter(nodesCache[element[0]], nodesCache[element[1]])
       );
       text.updateScale(size * displayScaleCache);
 
