@@ -71,7 +71,7 @@ export function Viewer(model: ModelState, settings: SettingsState) {
   controls.target.set(0.5 * gridSize, 0.5 * gridSize, 0);
   controls.minDistance = 1;
   controls.maxDistance = z2fit * 1.5;
-  controls.zoomSpeed = 20;
+  controls.zoomSpeed = 10;
   controls.update();
 
   // on windows resize
