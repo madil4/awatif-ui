@@ -12,17 +12,22 @@ export function Elements(
     new THREE.LineBasicMaterial()
   );
 
+  let nodesCache = nodes.val;
+
   lines.frustumCulled = false;
   lines.material.depthTest = false; // don't know why but is solves the rendering order issue
 
+  van.derive(() => (nodesCache = nodes.val));
+
   // on settings.elements, model.elements, and model.nodes update
   van.derive(() => {
+    settings.deformedShape.val; // trigger update when changed
     lines.visible = settings.elements.val;
 
     if (!settings.elements.val) return;
 
     const buffer = model.val.elements
-      .map((e) => [...nodes.val[e[0]], ...nodes.val[e[1]]])
+      .map((e) => [...nodesCache[e[0]], ...nodesCache[e[1]]])
       .flat();
 
     lines.geometry.setAttribute(

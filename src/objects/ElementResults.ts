@@ -34,9 +34,13 @@ export function ElementResults(
   };
 
   let displayScaleCache = displayScale.val;
+  let nodesCache = nodes.val;
+
+  van.derive(() => (nodesCache = nodes.val));
 
   // on settings.elementResults, model.elements, and model.nodes update
   van.derive(() => {
+    settings.deformedShape.val; // trigger update when changed
     group.visible = settings.elementResults.val != "none";
 
     if (settings.elementResults.val == "none") return;
@@ -49,8 +53,8 @@ export function ElementResults(
 
     model.val.analysisResults[resultType].forEach((result, index) => {
       const element = model.val.elements[index];
-      const node1 = nodes.val[element[0]];
-      const node2 = nodes.val[element[1]];
+      const node1 = nodesCache[element[0]];
+      const node2 = nodesCache[element[1]];
       const length = new THREE.Vector3(...node2).distanceTo(
         new THREE.Vector3(...node1)
       );

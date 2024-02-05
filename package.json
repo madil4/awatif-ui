@@ -1,6 +1,6 @@
 {
   "name": "awatif-ui",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "type": "module",
   "main": "src/App.ts",
   "types": "src/types.d.ts",

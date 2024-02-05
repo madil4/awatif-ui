@@ -14,9 +14,13 @@ export function Supports(
   const size = 0.05 * settings.gridSize.val * 0.6;
 
   let displayScaleCache = displayScale.val;
+  let nodesCache = nodes.val;
+
+  van.derive(() => (nodesCache = nodes.val));
 
   // on settings.support, model.assignment, and model.nodes update
   van.derive(() => {
+    settings.deformedShape.val; // trigger update when changed
     group.visible = settings.supports.val;
 
     if (!settings.supports.val) return;
@@ -25,7 +29,7 @@ export function Supports(
     model.val.assignments.supports.forEach((_, index) => {
       const sphere = new THREE.Mesh(geometry, material);
 
-      sphere.position.set(...nodes.val[index]);
+      sphere.position.set(...nodesCache[index]);
       const scale = size * displayScaleCache;
       sphere.scale.set(scale, scale, scale);
 
