@@ -27,7 +27,7 @@ model.elements = [
 model.assignments = [
   { node: 0, support: [true, true, true, true, true, true] },
   { node: 3, support: [true, true, true, true, true, true] },
-  { node: 2, load: [10, 0, 0, 0, 0, 0] },
+  { node: 2, load: [3e-3, 0, 0, 0, 0, 0] },
   { ...beamProperty, element: 0 },
   { ...beamProperty, element: 1 },
   { ...beamProperty, element: 2 },

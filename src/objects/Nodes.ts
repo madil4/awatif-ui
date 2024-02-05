@@ -1,9 +1,9 @@
 import * as THREE from "three";
-import { ModelState, SettingsState } from "../types";
+import { SettingsState, Node } from "../types";
 import van, { State } from "vanjs-core";
 
 export function Nodes(
-  model: ModelState,
+  nodes: State<Node[]>,
   settings: SettingsState,
   displayScale: State<number>
 ): THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial> {
@@ -22,7 +22,7 @@ export function Nodes(
 
     points.geometry.setAttribute(
       "position",
-      new THREE.Float32BufferAttribute(model.val.nodes.flat(), 3)
+      new THREE.Float32BufferAttribute(nodes.val.flat(), 3)
     );
   });
 

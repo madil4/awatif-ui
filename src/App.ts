@@ -30,6 +30,7 @@ function App({ model, parameters, onParameterChange, settings }: AppType) {
     orientations: van.state(settings?.orientations ?? false),
     supports: van.state(settings?.supports ?? true),
     loads: van.state(settings?.loads ?? true),
+    deformedShape: van.state(settings?.loads ?? false),
     elementResults: van.state(settings?.elementResults ?? "none"),
     nodeResults: van.state(settings?.nodeResults ?? "none"),
   };
@@ -48,11 +49,11 @@ function App({ model, parameters, onParameterChange, settings }: AppType) {
 
       // consider updating only if there a change instead of a brute change
       modelState.val = {
-        nodes: newModel.nodes || [],
-        elements: newModel.elements || [],
-        assignments: processAssignments(newModel.assignments || []),
+        nodes: newModel.nodes ?? [],
+        elements: newModel.elements ?? [],
+        assignments: processAssignments(newModel.assignments ?? []),
         analysisResults: processAnalysisResults(
-          newModel.analysisResults || { default: [] }
+          newModel.analysisResults ?? { default: [] }
         ),
       };
     });

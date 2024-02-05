@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import van, { State } from "vanjs-core";
-import { ModelState, SettingsState } from "../types";
+import { ModelState, SettingsState, Node } from "../types";
 import { Text } from "./Text";
-import { computeCenter } from "../utils/computeCenter";
+import { getCenter } from "../utils/getCenter";
 
 export function ElementsIndexes(
+  nodes: State<Node[]>,
   model: ModelState,
   settings: SettingsState,
   displayScale: State<number>
@@ -26,10 +27,7 @@ export function ElementsIndexes(
       const text = new Text(`${index}`, undefined, "#001219");
 
       text.position.set(
-        ...computeCenter(
-          model.val.nodes[element[0]],
-          model.val.nodes[element[1]]
-        )
+        ...getCenter(nodes.val[element[0]], nodes.val[element[1]])
       );
       text.updateScale(size * displayScaleCache);
 

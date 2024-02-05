@@ -31,6 +31,9 @@ export function Settings(settingsState: SettingsState) {
   pane.addBinding(settingsState.orientations, "val", { label: "Orientations" });
   pane.addBinding(settingsState.supports, "val", { label: "Supports" });
   pane.addBinding(settingsState.loads, "val", { label: "Loads" });
+  pane.addBinding(settingsState.deformedShape, "val", {
+    label: "Deformed shape",
+  });
   pane.addBinding(settingsState.elementResults, "val", {
     options: {
       none: "none",

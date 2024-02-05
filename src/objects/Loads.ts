@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import van, { State } from "vanjs-core";
-import { ModelState, SettingsState } from "../types";
+import { ModelState, SettingsState, Node } from "../types";
 
 export function Loads(
+  nodes: State<Node[]>,
   model: ModelState,
   settings: SettingsState,
   displayScale: State<number>
@@ -23,7 +24,7 @@ export function Loads(
     model.val.assignments.loads.forEach((load, index) => {
       const arrow = new THREE.ArrowHelper(
         new THREE.Vector3(...load).normalize(),
-        new THREE.Vector3(...model.val.nodes[index]),
+        new THREE.Vector3(...nodes.val[index]),
         1,
         0xee9b00,
         0.3,

@@ -31,6 +31,7 @@ export type Settings = {
   orientations?: boolean;
   supports?: boolean;
   loads?: boolean;
+  deformedShape?: boolean;
   elementResults?: string;
   nodeResults?: string;
 };
@@ -45,6 +46,7 @@ export type SettingsState = {
   orientations: State<boolean>;
   supports: State<boolean>;
   loads: State<boolean>;
+  deformedShape: State<boolean>;
   elementResults: State<string>;
   nodeResults: State<string>;
 };

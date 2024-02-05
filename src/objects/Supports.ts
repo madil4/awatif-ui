@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import van, { State } from "vanjs-core";
-import { ModelState, SettingsState } from "../types";
+import { ModelState, SettingsState, Node } from "../types";
 
 export function Supports(
+  nodes: State<Node[]>,
   model: ModelState,
   settings: SettingsState,
   displayScale: State<number>
@@ -24,7 +25,7 @@ export function Supports(
     model.val.assignments.supports.forEach((_, index) => {
       const sphere = new THREE.Mesh(geometry, material);
 
-      sphere.position.set(...model.val.nodes[index]);
+      sphere.position.set(...nodes.val[index]);
       const scale = size * displayScaleCache;
       sphere.scale.set(scale, scale, scale);
 

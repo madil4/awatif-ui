@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { Node } from "../../types";
 import { roundTo5 } from "../../utils/roundTo5";
 import { Text } from "../Text";
-import { compute5thFromFirstPoint } from "../../utils/compute5thFromFirstPoint";
+import { get5thFromFirstPoint } from "../../utils/get5thFromFirstPoint";
 import { IResultObject } from "./IResultObject";
 
 export class LinearResult extends THREE.Group implements IResultObject {
@@ -31,8 +31,8 @@ export class LinearResult extends THREE.Group implements IResultObject {
     this.text = new Text(`${roundTo5(result[0])}`);
     this.text2 = new Text(`${roundTo5(-result[1])}`);
 
-    this.text.position.set(...compute5thFromFirstPoint(node1, node2));
-    this.text2.position.set(...compute5thFromFirstPoint(node2, node1));
+    this.text.position.set(...get5thFromFirstPoint(node1, node2));
+    this.text2.position.set(...get5thFromFirstPoint(node2, node1));
 
     this.add(this.text, this.text2);
 

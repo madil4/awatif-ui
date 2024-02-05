@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import van, { State } from "vanjs-core";
-import { ModelState, SettingsState } from "../types";
+import { ModelState, SettingsState, Node } from "../types";
 import { getTransformationMatrix } from "../utils/getTransformationMatrix";
 import { ConstantResult } from "./resultObjects/ConstantResult";
 import { LinearResult } from "./resultObjects/LinearResult";
@@ -16,6 +16,7 @@ enum ResultType {
 }
 
 export function ElementResults(
+  nodes: State<Node[]>,
   model: ModelState,
   settings: SettingsState,
   displayScale: State<number>
@@ -48,8 +49,8 @@ export function ElementResults(
 
     model.val.analysisResults[resultType].forEach((result, index) => {
       const element = model.val.elements[index];
-      const node1 = model.val.nodes[element[0]];
-      const node2 = model.val.nodes[element[1]];
+      const node1 = nodes.val[element[0]];
+      const node2 = nodes.val[element[1]];
       const length = new THREE.Vector3(...node2).distanceTo(
         new THREE.Vector3(...node1)
       );

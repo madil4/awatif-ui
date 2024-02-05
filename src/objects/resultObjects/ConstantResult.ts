@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { Node } from "../../types";
 import { roundTo5 } from "../../utils/roundTo5";
 import { Text } from "../Text";
-import { computeCenter } from "../../utils/computeCenter";
+import { getCenter } from "../../utils/getCenter";
 import { IResultObject } from "./IResultObject";
 
 export class ConstantResult extends THREE.Group implements IResultObject {
@@ -60,7 +60,7 @@ export class ConstantResult extends THREE.Group implements IResultObject {
     // text
     this.text = new Text(`${roundTo5(result[0])}`);
 
-    this.text.position.set(...computeCenter(node1, node2));
+    this.text.position.set(...getCenter(node1, node2));
 
     this.add(this.text);
   }

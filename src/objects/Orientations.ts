@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import van, { State } from "vanjs-core";
-import { ModelState, SettingsState } from "../types";
+import { ModelState, SettingsState, Node } from "../types";
 import { getTransformationMatrix } from "../utils/getTransformationMatrix";
-import { compute5thFromFirstPoint } from "../utils/compute5thFromFirstPoint";
+import { get5thFromFirstPoint } from "../utils/get5thFromFirstPoint";
 
 export function Orientations(
+  nodes: State<Node[]>,
   model: ModelState,
   settings: SettingsState,
   displayScale: State<number>
@@ -47,10 +48,10 @@ export function Orientations(
     group.clear();
     model.val.elements.forEach((element) => {
       const axes = new THREE.LineSegments(geometry, material);
-      const node1 = model.val.nodes[element[0]];
-      const node2 = model.val.nodes[element[1]];
+      const node1 = nodes.val[element[0]];
+      const node2 = nodes.val[element[1]];
 
-      axes.position.set(...compute5thFromFirstPoint(node1, node2));
+      axes.position.set(...get5thFromFirstPoint(node1, node2));
       axes.rotation.setFromRotationMatrix(
         getTransformationMatrix(node1, node2)
       );
