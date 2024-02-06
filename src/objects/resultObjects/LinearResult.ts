@@ -28,7 +28,7 @@ export class LinearResult extends THREE.Group implements IResultObject {
     super();
 
     const intersection = (result[0] * length) / (result[0] + result[1]);
-    const twoSegments = intersection < length;
+    const twoSegments = result[0] * result[1] > 0;
 
     // text
     this.text = new Text(`${roundTo5(result[0])}`);
